@@ -13,9 +13,7 @@ function httpGet(url) {
           // redirect
           let redirectUrl = res.headers.location
           if (!redirectUrl.startsWith('http')) {
-            const baseUrl = new URL(url)
-            baseUrl.pathname = redirectUrl
-            redirectUrl = String(baseUrl)
+            redirectUrl = new URL(redirectUrl, url).toString()
           }
           resolve(httpGet(redirectUrl))
           return
