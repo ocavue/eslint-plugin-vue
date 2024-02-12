@@ -3,12 +3,15 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/no-watch-after-await')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2020, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2020,
+    sourceType: 'module'
+  }
 })
 
 tester.run('no-watch-after-await', rule, {
@@ -92,12 +95,11 @@ tester.run('no-watch-after-await', rule, {
       </script>
       `
     },
-    {
-      code: `
+    `
       Vue.component('test', {
         el: foo()
-      })`
-    },
+      })
+    `,
     {
       filename: 'test.vue',
       code: `
@@ -128,7 +130,7 @@ tester.run('no-watch-after-await', rule, {
       await doSomething()
       </script>
       `,
-      parserOptions: { ecmaVersion: 2022 }
+      languageOptions: { ecmaVersion: 2022 }
     },
     {
       filename: 'test.vue',
@@ -141,7 +143,7 @@ tester.run('no-watch-after-await', rule, {
       watchEffect(() => { /* ... */ }) // not error
       </script>
       `,
-      parserOptions: { ecmaVersion: 2022 }
+      languageOptions: { ecmaVersion: 2022 }
     },
     {
       filename: 'test.vue',
@@ -154,7 +156,7 @@ tester.run('no-watch-after-await', rule, {
       watchEffect(() => { /* ... */ }) // not error
       </script>
       `,
-      parserOptions: { ecmaVersion: 2022 }
+      languageOptions: { ecmaVersion: 2022 }
     },
     {
       filename: 'test.vue',
@@ -168,7 +170,7 @@ tester.run('no-watch-after-await', rule, {
       watch(foo, () => { /* ... */ })
       </script>
       `,
-      parserOptions: { ecmaVersion: 2022 }
+      languageOptions: { ecmaVersion: 2022 }
     }
   ],
   invalid: [

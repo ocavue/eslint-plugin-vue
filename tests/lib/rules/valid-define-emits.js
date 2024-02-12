@@ -4,12 +4,15 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/valid-define-emits')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2015,
+    sourceType: 'module'
+  }
 })
 
 tester.run('valid-define-emits', rule, {
@@ -40,7 +43,9 @@ tester.run('valid-define-emits', rule, {
         defineEmits<(e: 'notify')=>void>()
       </script>
       `,
-      parserOptions: { parser: require.resolve('@typescript-eslint/parser') }
+      languageOptions: {
+        parserOptions: { parser: require.resolve('@typescript-eslint/parser') }
+      }
     },
     {
       filename: 'test.vue',
@@ -69,9 +74,6 @@ tester.run('valid-define-emits', rule, {
     {
       // https://github.com/vuejs/eslint-plugin-vue/issues/1656
       filename: 'test.vue',
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
       code: `
       <script setup lang="ts">
       import type { PropType } from 'vue';
@@ -86,13 +88,15 @@ tester.run('valid-define-emits', rule, {
         myProp: (x: X) => true,
       });
       </script>
-      `
+      `,
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     },
     {
       filename: 'test.vue',
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
       code: `
       <script setup lang="ts">
       import type { PropType } from 'vue';
@@ -108,7 +112,12 @@ tester.run('valid-define-emits', rule, {
         myProp: (x: typeof str) => true,
       });
       </script>
-      `
+      `,
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     },
     {
       filename: 'test.vue',
@@ -146,13 +155,15 @@ tester.run('valid-define-emits', rule, {
         defineEmits<(e: 'notify')=>void>({ submit: null })
       </script>
       `,
-      parserOptions: { parser: require.resolve('@typescript-eslint/parser') },
       errors: [
         {
           message: '`defineEmits` has both a type-only emit and an argument.',
           line: 4
         }
-      ]
+      ],
+      languageOptions: {
+        parserOptions: { parser: require.resolve('@typescript-eslint/parser') }
+      }
     },
     {
       filename: 'test.vue',

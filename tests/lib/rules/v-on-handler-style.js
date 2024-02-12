@@ -4,12 +4,15 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/v-on-handler-style')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2020, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2020,
+    sourceType: 'module'
+  }
 })
 
 tester.run('v-on-handler-style', rule, {
@@ -78,12 +81,12 @@ tester.run('v-on-handler-style', rule, {
         <button @click="foo()" />
         <button @click="() => foo()" />
       </template>`,
-      options: [['method', 'inline-function']],
       output: `<template>
         <button @click="foo" />
         <button @click="foo" />
         <button @click="foo" />
       </template>`,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -155,12 +158,12 @@ tester.run('v-on-handler-style', rule, {
         <button @click="foo()" />
         <button @click="() => foo()" />
       </template>`,
-      options: ['inline-function'],
       output: `<template>
         <button @click="foo" />
         <button @click="() => foo()" />
         <button @click="() => foo()" />
       </template>`,
+      options: ['inline-function'],
       errors: [
         {
           message: 'Prefer inline function over method handler in v-on.',
@@ -193,8 +196,8 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="foo() /* comment */" />
       </template>`,
-      options: [['method', 'inline-function']],
       output: null,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -208,10 +211,10 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="foo() /* comment */" />
       </template>`,
-      options: [['method', 'inline-function'], { ignoreIncludesComment: true }],
       output: `<template>
         <button @click="() => foo() /* comment */" />
       </template>`,
+      options: [['method', 'inline-function'], { ignoreIncludesComment: true }],
       errors: [
         {
           message: 'Prefer inline function over inline handler in v-on.',
@@ -229,8 +232,8 @@ tester.run('v-on-handler-style', rule, {
         <button @click="foo()// comment
         "/>
       </template>`,
-      options: [['method', 'inline-function']],
       output: null,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -263,7 +266,6 @@ tester.run('v-on-handler-style', rule, {
         <button @click="{ fn(); }" />
         <button @click="{(fn());;;}" />
       </template>`,
-      options: [['method', 'inline-function']],
       output: `
       <template>
         <button @click="fn" />
@@ -271,6 +273,7 @@ tester.run('v-on-handler-style', rule, {
         <button @click="fn" />
         <button @click="fn" />
       </template>`,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -301,12 +304,12 @@ tester.run('v-on-handler-style', rule, {
         <div @click=" beforeSpace()" />
         <div @click='afterSpace() ' />
       </template>`,
-      options: [['method', 'inline-function']],
       output: `
       <template>
         <div @click="beforeSpace" />
         <div @click='afterSpace' />
       </template>`,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -326,11 +329,11 @@ tester.run('v-on-handler-style', rule, {
       <template>
         <button @click=" &#x66;oo ( ) " />
       </template>`,
-      options: [['method', 'inline-function']],
       output: `
       <template>
         <button @click="&#x66;oo" />
       </template>`,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -350,7 +353,6 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
-      options: [['method', 'inline-function']],
       output: `
       <template><button @click="foo" /></template>
       <script>
@@ -360,6 +362,7 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -379,7 +382,6 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
-      options: [['method', 'inline-function']],
       output: `
       <template><button @click="foo" /></template>
       <script>
@@ -389,6 +391,7 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -406,8 +409,8 @@ tester.run('v-on-handler-style', rule, {
         <button @click="foo();foo();" />
         <button @click="{}" />
       </template>`,
-      options: [['method', 'inline-function']],
       output: null,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -451,8 +454,8 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
-      options: [['method', 'inline-function']],
       output: null,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -478,8 +481,8 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
-      options: [['method', 'inline-function']],
       output: null,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -515,8 +518,8 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
-      options: [['method', 'inline-function']],
       output: null,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -542,12 +545,12 @@ tester.run('v-on-handler-style', rule, {
           <button @click="e()" />
         </template>
       </template>`,
-      options: [['method', 'inline-function']],
       output: `<template>
         <template v-for="e in list">
           <button @click="e" />
         </template>
       </template>`,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer method handler over inline handler in v-on.',
@@ -566,7 +569,6 @@ tester.run('v-on-handler-style', rule, {
           <button @click="e.foo()" />
         </template>
       </template>`,
-      options: [['method', 'inline-function']],
       output: `<template>
         <template v-for="e in list">
           <button @click="() => handler(e)" />
@@ -575,6 +577,7 @@ tester.run('v-on-handler-style', rule, {
           <button @click="() => e.foo()" />
         </template>
       </template>`,
+      options: [['method', 'inline-function']],
       errors: [
         {
           message: 'Prefer inline function over inline handler in v-on.',
@@ -694,8 +697,8 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="foo" />
       </template>`,
-      options: ['inline'],
       output: null,
+      options: ['inline'],
       errors: [
         {
           message: 'Prefer inline handler over method handler in v-on.',
@@ -712,12 +715,12 @@ tester.run('v-on-handler-style', rule, {
         <button @click="(a, b) => foo(a, b)" />
         <button @click="() => { foo() }" />
       </template>`,
-      options: [['method', 'inline']],
       output: `<template>
         <button @click="foo" />
         <button @click="foo" />
         <button @click="foo" />
       </template>`,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer method handler over inline function in v-on.',
@@ -741,8 +744,8 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="() => foo() /* comment */" />
       </template>`,
-      options: [['method', 'inline']],
       output: null,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer method handler over inline function in v-on.',
@@ -756,10 +759,10 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="() => foo() /* comment */" />
       </template>`,
-      options: [['method', 'inline'], { ignoreIncludesComment: true }],
       output: `<template>
         <button @click="foo() /* comment */" />
       </template>`,
+      options: [['method', 'inline'], { ignoreIncludesComment: true }],
       errors: [
         {
           message: 'Prefer inline handler over inline function in v-on.',
@@ -780,7 +783,6 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
-      options: [['method', 'inline']],
       output: `<template>
         <button @click="foo" />
       </template>
@@ -791,6 +793,7 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer method handler over inline function in v-on.',
@@ -811,7 +814,6 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
-      options: [['method', 'inline']],
       output: `<template>
         <button @click="foo" />
       </template>
@@ -822,6 +824,7 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer method handler over inline function in v-on.',
@@ -835,8 +838,8 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="() => handler(foo)" />
       </template>`,
-      options: [['method', 'inline']],
       output: null,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer method handler over inline function in v-on.',
@@ -850,8 +853,8 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="() => foo?.()" />
       </template>`,
-      options: [['method', 'inline']],
       output: null,
+      options: [['method', 'inline']],
       errors: [
         {
           message:
@@ -866,8 +869,8 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="() => count++" />
       </template>`,
-      options: [['method', 'inline']],
       output: null,
+      options: [['method', 'inline']],
       errors: [
         {
           message:
@@ -882,8 +885,8 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="() => { count++ }" />
       </template>`,
-      options: [['method', 'inline']],
       output: null,
+      options: [['method', 'inline']],
       errors: [
         {
           message:
@@ -900,8 +903,8 @@ tester.run('v-on-handler-style', rule, {
         <button @click="(a, b) => foo(...a, b)" />
         <button @click="(...a) => foo(a)" />
       </template>`,
-      options: [['method', 'inline']],
       output: null,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer method handler over inline function in v-on.',
@@ -937,8 +940,8 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
-      options: [['method', 'inline']],
       output: null,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer method handler over inline function in v-on.',
@@ -974,8 +977,8 @@ tester.run('v-on-handler-style', rule, {
         }
       }
       </script>`,
-      options: [['method', 'inline']],
       output: null,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer method handler over inline function in v-on.',
@@ -1003,7 +1006,6 @@ tester.run('v-on-handler-style', rule, {
           <button @click="(a, b) => e(a, b)" />
         </template>
       </template>`,
-      options: [['method', 'inline']],
       output: `<template>
         <template v-for="e in list">
           <button @click="e" />
@@ -1011,6 +1013,7 @@ tester.run('v-on-handler-style', rule, {
           <button @click="e" />
         </template>
       </template>`,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer method handler over inline function in v-on.',
@@ -1039,7 +1042,6 @@ tester.run('v-on-handler-style', rule, {
           <button @click="() => e.foo()" />
         </template>
       </template>`,
-      options: [['method', 'inline']],
       output: `<template>
         <template v-for="e in list">
           <button @click="handler(e)" />
@@ -1048,6 +1050,7 @@ tester.run('v-on-handler-style', rule, {
           <button @click="e.foo()" />
         </template>
       </template>`,
+      options: [['method', 'inline']],
       errors: [
         {
           message: 'Prefer inline handler over inline function in v-on.',
@@ -1079,12 +1082,12 @@ tester.run('v-on-handler-style', rule, {
         <button @click="() => count++" />
         <button @click="() => { count++; foo(); }" />
       </template>`,
-      options: ['inline'],
       output: `<template>
         <button @click="foo(a, b)" />
         <button @click="count++" />
         <button @click=" count++; foo(); " />
       </template>`,
+      options: ['inline'],
       errors: [
         {
           message: 'Prefer inline handler over inline function in v-on.',
@@ -1108,8 +1111,8 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="(a) => foo(a, b)" />
       </template>`,
-      options: ['inline'],
       output: null,
+      options: ['inline'],
       errors: [
         {
           message: 'Prefer inline handler over inline function in v-on.',
@@ -1123,8 +1126,8 @@ tester.run('v-on-handler-style', rule, {
       code: `<template>
         <button @click="(a, b) => foo(a, b)" />
       </template>`,
-      options: ['inline'],
       output: null,
+      options: ['inline'],
       errors: [
         {
           message:

@@ -3,12 +3,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/dot-location')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('dot-location', rule, {
@@ -61,7 +60,6 @@ tester.run('dot-location', rule, {
             bar"
         />
       </template>`,
-      options: ['property'],
       output: `
       <template>
         <div
@@ -69,6 +67,7 @@ tester.run('dot-location', rule, {
             .bar"
         />
       </template>`,
+      options: ['property'],
       errors: [
         {
           message: 'Expected dot to be on same line as property.',

@@ -3,12 +3,11 @@
  */
 'use strict'
 
-const { RuleTester } = require('eslint')
+const { RuleTester } = require('../../eslint-compat')
 const rule = require('../../../lib/rules/comma-style')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2018 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2018 }
 })
 
 tester.run('comma-style', rule, {
@@ -35,14 +34,13 @@ tester.run('comma-style', rule, {
         </template>`,
       options: ['first', { exceptions: { ArrowFunctionExpression: false } }]
     },
-    {
-      code: `
-        <template>
-          <CustomButton v-slot="a,
-            b
-            ,c" />
-        </template>`
-    },
+    `
+      <template>
+        <CustomButton v-slot="a,
+          b
+          ,c" />
+      </template>
+    `,
     {
       code: `
         <template>
@@ -82,12 +80,12 @@ tester.run('comma-style', rule, {
           <CustomButton @click="($event
             , data) => fn()" />
         </template>`,
-      options: ['last', { exceptions: { ArrowFunctionExpression: false } }],
       output: `
         <template>
           <CustomButton @click="($event,
              data) => fn()" />
         </template>`,
+      options: ['last', { exceptions: { ArrowFunctionExpression: false } }],
       errors: [
         {
           message: "',' should be placed last.",
@@ -101,12 +99,12 @@ tester.run('comma-style', rule, {
           <CustomButton @click="($event,
             data) => fn()" />
         </template>`,
-      options: ['first', { exceptions: { ArrowFunctionExpression: false } }],
       output: `
         <template>
           <CustomButton @click="($event
             ,data) => fn()" />
         </template>`,
+      options: ['first', { exceptions: { ArrowFunctionExpression: false } }],
       errors: [
         {
           message: "',' should be placed first."
@@ -122,7 +120,6 @@ tester.run('comma-style', rule, {
             <div/>
           </CustomButton>
         </template>`,
-      options: ['first', { exceptions: { FunctionExpression: false } }],
       output: `
         <template>
           <CustomButton v-slot="foo
@@ -130,6 +127,7 @@ tester.run('comma-style', rule, {
             <div/>
           </CustomButton>
         </template>`,
+      options: ['first', { exceptions: { FunctionExpression: false } }],
       errors: [
         {
           message: "',' should be placed first."
@@ -144,13 +142,13 @@ tester.run('comma-style', rule, {
             b
             ,c" />
         </template>`,
-      options: ['last', { exceptions: { FunctionExpression: false } }],
       output: `
         <template>
           <CustomButton v-slot="a,
             b,
             c" />
         </template>`,
+      options: ['last', { exceptions: { FunctionExpression: false } }],
       errors: [
         {
           message: "',' should be placed last."

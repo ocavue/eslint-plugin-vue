@@ -3,12 +3,14 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/array-bracket-spacing')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2015
+  }
 })
 
 tester.run('array-bracket-spacing', rule, {
@@ -54,20 +56,20 @@ tester.run('array-bracket-spacing', rule, {
     },
     {
       code: '<template><div :attr="[ a]" /></template>',
-      options: ['never'],
       output: '<template><div :attr="[a]" /></template>',
+      options: ['never'],
       errors: ["There should be no space after '['."]
     },
     {
       code: '<template><div :attr="[a ]" /></template>',
-      options: ['never'],
       output: '<template><div :attr="[a]" /></template>',
+      options: ['never'],
       errors: ["There should be no space before ']'."]
     },
     {
       code: '<template><div :attr="[ a ]" /></template>',
-      options: ['never'],
       output: '<template><div :attr="[a]" /></template>',
+      options: ['never'],
       errors: [
         "There should be no space after '['.",
         "There should be no space before ']'."
@@ -75,20 +77,20 @@ tester.run('array-bracket-spacing', rule, {
     },
     {
       code: '<template><div :attr="[ a]" /></template>',
-      options: ['always'],
       output: '<template><div :attr="[ a ]" /></template>',
+      options: ['always'],
       errors: ["A space is required before ']'."]
     },
     {
       code: '<template><div :attr="[a ]" /></template>',
-      options: ['always'],
       output: '<template><div :attr="[ a ]" /></template>',
+      options: ['always'],
       errors: ["A space is required after '['."]
     },
     {
       code: '<template><div :attr="[a]" /></template>',
-      options: ['always'],
       output: '<template><div :attr="[ a ]" /></template>',
+      options: ['always'],
       errors: [
         "A space is required after '['.",
         "A space is required before ']'."
@@ -96,8 +98,8 @@ tester.run('array-bracket-spacing', rule, {
     },
     {
       code: '<template><div :[[attr]]="[a]" /></template>',
-      options: ['always'],
       output: '<template><div :[[attr]]="[ a ]" /></template>',
+      options: ['always'],
       errors: [
         "A space is required after '['.",
         "A space is required before ']'."

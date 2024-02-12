@@ -5,12 +5,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/valid-v-on')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('valid-v-on', rule, {
@@ -140,14 +139,14 @@ tester.run('valid-v-on', rule, {
     {
       filename: 'test.vue',
       code: '<template><div @keydown.bar.aaa="foo"></div></template>',
-      errors: ["'v-on' directives don't support the modifier 'aaa'."],
-      options: [{ modifiers: ['bar'] }]
+      options: [{ modifiers: ['bar'] }],
+      errors: ["'v-on' directives don't support the modifier 'aaa'."]
     },
     {
       filename: 'test.vue',
       code: '<template><div @keydown.bar.aaa="foo"></div></template>',
-      errors: ["'v-on' directives don't support the modifier 'bar'."],
-      options: [{ modifiers: ['aaa'] }]
+      options: [{ modifiers: ['aaa'] }],
+      errors: ["'v-on' directives don't support the modifier 'bar'."]
     },
     {
       filename: 'test.vue',

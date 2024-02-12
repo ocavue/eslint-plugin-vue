@@ -9,8 +9,8 @@ const rule = require('../../../lib/rules/multiline-ternary')
 const semver = require('semver')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
     ecmaVersion: 2020,
     sourceType: 'module'
   }
@@ -92,6 +92,7 @@ tester.run('multiline-ternary', rule, {
         </template>
         `
         : null,
+      options: ['always-multiline'],
       errors: [
         {
           message:
@@ -99,8 +100,7 @@ tester.run('multiline-ternary', rule, {
           line: 5,
           column: 15
         }
-      ],
-      options: ['always-multiline']
+      ]
     },
     {
       filename: 'test.vue',
@@ -123,6 +123,7 @@ tester.run('multiline-ternary', rule, {
         </template>
         `
         : null,
+      options: ['never'],
       errors: [
         {
           message:
@@ -130,8 +131,7 @@ tester.run('multiline-ternary', rule, {
           line: 4,
           column: 21
         }
-      ],
-      options: ['never']
+      ]
     },
     {
       filename: 'test.vue',

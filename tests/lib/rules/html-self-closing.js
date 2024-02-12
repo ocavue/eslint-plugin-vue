@@ -6,10 +6,10 @@
 'use strict'
 
 const rule = require('../../../lib/rules/html-self-closing')
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser')
+  languageOptions: { parser: require('vue-eslint-parser') }
 })
 
 const ALL_CODE = `<template>
@@ -64,8 +64,12 @@ tester.run('html-self-closing', rule, {
     '<template><div a=">test</div></template>',
     '<template><div><!--test</div></template>',
 
+    // Empty top-level tags
+    '<template></template><script></script><docs></docs>',
+
     // https://github.com/vuejs/eslint-plugin-vue/issues/1403
     {
+      filename: 'test.vue',
       code: `
       <template>
         <div>
@@ -76,8 +80,7 @@ tester.run('html-self-closing', rule, {
           </p>
         </div>
       </template>
-      `,
-      filename: 'test.vue'
+      `
     }
 
     // other cases are in `invalid` tests.

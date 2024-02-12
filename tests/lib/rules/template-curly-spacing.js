@@ -3,12 +3,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/template-curly-spacing')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2020 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2020 }
 })
 
 tester.run('template-curly-spacing', rule, {
@@ -41,14 +40,13 @@ tester.run('template-curly-spacing', rule, {
     },
 
     // CSS vars injection
-    {
-      code: `
+    `
       <style>
       .text {
         padding: v-bind(\`\${a}px\`)
       }
-      </style>`
-    }
+      </style>
+    `
   ],
   invalid: [
     {
@@ -79,12 +77,12 @@ tester.run('template-curly-spacing', rule, {
         <div :class="[\`foo-\${bar}\`]" />
       </template>
       `,
-      options: ['always'],
       output: `
       <template>
         <div :class="[\`foo-\${ bar }\`]" />
       </template>
       `,
+      options: ['always'],
       errors: [
         {
           message: "Expected space(s) after '${'.",

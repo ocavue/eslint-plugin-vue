@@ -3,12 +3,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/comma-dangle')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2018 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2018 }
 })
 
 tester.run('comma-dangle', rule, {
@@ -38,12 +37,11 @@ tester.run('comma-dangle', rule, {
         }
       ]
     },
-    {
-      code: `
+    `
       <template>
         <button :[[a,b][1]]="a" ></button>
-      </template>`
-    },
+      </template>
+    `,
     {
       code: `
       <template>
@@ -74,15 +72,15 @@ tester.run('comma-dangle', rule, {
         <template>
           <CustomButton @click="($event, ) => fn()" />
         </template>`,
+      output: `
+        <template>
+          <CustomButton @click="($event ) => fn()" />
+        </template>`,
       options: [
         {
           functions: 'never'
         }
       ],
-      output: `
-        <template>
-          <CustomButton @click="($event ) => fn()" />
-        </template>`,
       errors: [
         {
           message: 'Unexpected trailing comma.',
@@ -101,7 +99,6 @@ tester.run('comma-dangle', rule, {
             ])
           }"></button>
         </template>`,
-      options: ['always-multiline'],
       output: `
         <template>
           <button @click="() => {
@@ -112,6 +109,7 @@ tester.run('comma-dangle', rule, {
             ])
           }"></button>
         </template>`,
+      options: ['always-multiline'],
       errors: [
         {
           message: 'Unexpected trailing comma.',

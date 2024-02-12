@@ -5,46 +5,25 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/no-unused-vars')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('no-unused-vars', rule, {
   valid: [
-    {
-      code: '<template><ol v-for="i in 5"><li>{{i}}</li></ol></template>'
-    },
-    {
-      code: '<template><ol v-for="i in 5"><li :prop="i"></li></ol></template>'
-    },
-    {
-      code: '<template v-for="i in 5"><comp v-for="j in 10">{{i}}{{j}}</comp></template>'
-    },
-    {
-      code: '<template><ol v-for="i in data"><li v-for="f in i">{{ f.bar.baz }}</li></ol></template>'
-    },
-    {
-      code: '<template><template scope="props">{{props}}</template></template>'
-    },
-    {
-      code: '<template><template scope="props"><span v-if="props"></span></template></template>'
-    },
-    {
-      code: '<template><div v-for="(item, key) in items" :key="key">{{item.name}}</div></template>'
-    },
-    {
-      code: '<template><div v-for="(v, i, c) in foo">{{c}}</div></template>'
-    },
-    {
-      code: '<template><div v-for="x in foo">{{value | f(x)}}</div></template>'
-    },
-    {
-      code: '<template><div v-for="x in foo" :[x]></div></template>'
-    },
+    '<template><ol v-for="i in 5"><li>{{i}}</li></ol></template>',
+    '<template><ol v-for="i in 5"><li :prop="i"></li></ol></template>',
+    '<template v-for="i in 5"><comp v-for="j in 10">{{i}}{{j}}</comp></template>',
+    '<template><ol v-for="i in data"><li v-for="f in i">{{ f.bar.baz }}</li></ol></template>',
+    '<template><template scope="props">{{props}}</template></template>',
+    '<template><template scope="props"><span v-if="props"></span></template></template>',
+    '<template><div v-for="(item, key) in items" :key="key">{{item.name}}</div></template>',
+    '<template><div v-for="(v, i, c) in foo">{{c}}</div></template>',
+    '<template><div v-for="x in foo">{{value | f(x)}}</div></template>',
+    '<template><div v-for="x in foo" :[x]></div></template>',
     {
       code: '<template><div v-for="_ in foo" ></div></template>',
       options: [{ ignorePattern: '^_' }]
@@ -108,19 +87,19 @@ tester.run('no-unused-vars', rule, {
     },
     {
       code: '<template><div v-for="x in items">{{value | x}}</div></template>',
+      options: [{ ignorePattern: '^_' }],
       errors: [
         {
           message: "'x' is defined but never used.",
           suggestions: [
             {
-              desc: 'Replace the x with _x',
+              desc: 'Replace `x` with `_x` to ignore the unused variable.',
               output:
                 '<template><div v-for="_x in items">{{value | x}}</div></template>'
             }
           ]
         }
-      ],
-      options: [{ ignorePattern: '^_' }]
+      ]
     },
     {
       code: '<template><div v-for="x in items">{{value}}</div></template>',
@@ -129,13 +108,13 @@ tester.run('no-unused-vars', rule, {
     },
     {
       code: '<template><span slot-scope="props"></span></template>',
-      errors: ["'props' is defined but never used."],
-      options: [{ ignorePattern: '^ignore' }]
+      options: [{ ignorePattern: '^ignore' }],
+      errors: ["'props' is defined but never used."]
     },
     {
       code: '<template><span><template scope="props"></template></span></template>',
-      errors: ["'props' is defined but never used."],
-      options: [{ ignorePattern: '^ignore' }]
+      options: [{ ignorePattern: '^ignore' }],
+      errors: ["'props' is defined but never used."]
     },
     {
       code: '<template><div v-for="_i in foo" ></div></template>',

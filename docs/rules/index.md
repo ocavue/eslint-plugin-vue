@@ -62,7 +62,7 @@ Rules in this category are enabled for all presets provided by eslint-plugin-vue
 | [vue/no-deprecated-slot-attribute](./no-deprecated-slot-attribute.md) | disallow deprecated `slot` attribute (in Vue.js 2.6.0+) | :wrench: | :three::hammer: |
 | [vue/no-deprecated-slot-scope-attribute](./no-deprecated-slot-scope-attribute.md) | disallow deprecated `slot-scope` attribute (in Vue.js 2.6.0+) | :wrench: | :three::hammer: |
 | [vue/no-deprecated-v-bind-sync](./no-deprecated-v-bind-sync.md) | disallow use of deprecated `.sync` modifier on `v-bind` directive (in Vue.js 3.0.0+) | :wrench: | :three::warning: |
-| [vue/no-deprecated-v-is](./no-deprecated-v-is.md) | disallow deprecated `v-is` directive (in Vue.js 3.1.0+) | :wrench: | :three::hammer: |
+| [vue/no-deprecated-v-is](./no-deprecated-v-is.md) | disallow deprecated `v-is` directive (in Vue.js 3.1.0+) |  | :three::hammer: |
 | [vue/no-deprecated-v-on-native-modifier](./no-deprecated-v-on-native-modifier.md) | disallow using deprecated `.native` modifiers (in Vue.js 3.0.0+) |  | :three::warning: |
 | [vue/no-deprecated-v-on-number-modifiers](./no-deprecated-v-on-number-modifiers.md) | disallow using deprecated number (keycode) modifiers (in Vue.js 3.0.0+) | :wrench: | :three::warning: |
 | [vue/no-deprecated-vue-config-keycodes](./no-deprecated-vue-config-keycodes.md) | disallow using deprecated `Vue.config.keyCodes` (in Vue.js 3.0.0+) |  | :three::warning: |
@@ -79,7 +79,6 @@ Rules in this category are enabled for all presets provided by eslint-plugin-vue
 | [vue/no-reserved-component-names](./no-reserved-component-names.md) | disallow the use of reserved names in component definitions |  | :three::two::hammer: |
 | [vue/no-reserved-keys](./no-reserved-keys.md) | disallow overwriting reserved keys |  | :three::two::hammer: |
 | [vue/no-reserved-props](./no-reserved-props.md) | disallow reserved names in props |  | :three::two::warning: |
-| [vue/no-setup-props-destructure](./no-setup-props-destructure.md) | disallow destructuring of `props` passed to `setup` |  | :three::two::hammer: |
 | [vue/no-shared-component-data](./no-shared-component-data.md) | enforce component's data property to be a function | :wrench: | :three::two::warning: |
 | [vue/no-side-effects-in-computed-properties](./no-side-effects-in-computed-properties.md) | disallow side effects in computed properties |  | :three::two::warning: |
 | [vue/no-template-key](./no-template-key.md) | disallow `key` attribute on `<template>` |  | :three::two::warning: |
@@ -87,7 +86,7 @@ Rules in this category are enabled for all presets provided by eslint-plugin-vue
 | [vue/no-unused-components](./no-unused-components.md) | disallow registering components that are not used inside templates |  | :three::two::hammer: |
 | [vue/no-unused-vars](./no-unused-vars.md) | disallow unused variable definitions of v-for directives or scope attributes | :bulb: | :three::two::hammer: |
 | [vue/no-use-computed-property-like-method](./no-use-computed-property-like-method.md) | disallow use computed property like method |  | :three::two::warning: |
-| [vue/no-use-v-if-with-v-for](./no-use-v-if-with-v-for.md) | disallow use v-if on the same element as v-for |  | :three::two::hammer: |
+| [vue/no-use-v-if-with-v-for](./no-use-v-if-with-v-for.md) | disallow using `v-if` on the same element as `v-for` |  | :three::two::hammer: |
 | [vue/no-useless-template-attributes](./no-useless-template-attributes.md) | disallow useless attribute on `<template>` |  | :three::two::warning: |
 | [vue/no-v-for-template-key-on-child](./no-v-for-template-key-on-child.md) | disallow key of `<template v-for>` placed on child elements |  | :three::warning: |
 | [vue/no-v-for-template-key](./no-v-for-template-key.md) | disallow `key` attribute on `<template v-for>` |  | :two::warning: |
@@ -178,7 +177,7 @@ Rules in this category are enabled for all presets provided by eslint-plugin-vue
 | Rule ID | Description |    |    |
 |:--------|:------------|:--:|:--:|
 | [vue/attributes-order](./attributes-order.md) | enforce order of attributes | :wrench: | :three::two::hammer: |
-| [vue/component-tags-order](./component-tags-order.md) | enforce order of component top-level elements | :wrench: | :three::two::hammer: |
+| [vue/component-tags-order](./component-tags-order.md) | enforce order of component top-level elements | :wrench::no_entry_sign: | :three::two::hammer: |
 | [vue/no-lone-template](./no-lone-template.md) | disallow unnecessary `<template>` |  | :three::two::warning: |
 | [vue/no-multiple-slot-args](./no-multiple-slot-args.md) | disallow to pass multiple arguments to scoped slots |  | :three::two::warning: |
 | [vue/no-v-html](./no-v-html.md) | disallow use of v-html to prevent XSS attack |  | :three::two::hammer: |
@@ -207,48 +206,57 @@ For example:
 | Rule ID | Description |    |    |
 |:--------|:------------|:--:|:--:|
 | [vue/block-lang](./block-lang.md) | disallow use other than available `lang` |  | :hammer: |
+| [vue/block-order](./block-order.md) | enforce order of component top-level elements | :wrench: | :hammer: |
 | [vue/block-tag-newline](./block-tag-newline.md) | enforce line breaks after opening and before closing block-level tags | :wrench: | :lipstick: |
 | [vue/component-api-style](./component-api-style.md) | enforce component API style |  | :hammer: |
 | [vue/component-name-in-template-casing](./component-name-in-template-casing.md) | enforce specific casing for the component naming style in template | :wrench: | :hammer: |
 | [vue/component-options-name-casing](./component-options-name-casing.md) | enforce the casing of component name in `components` options | :wrench::bulb: | :hammer: |
 | [vue/custom-event-name-casing](./custom-event-name-casing.md) | enforce specific casing for custom event name |  | :hammer: |
 | [vue/define-emits-declaration](./define-emits-declaration.md) | enforce declaration style of `defineEmits` |  | :hammer: |
-| [vue/define-macros-order](./define-macros-order.md) | enforce order of `defineEmits` and `defineProps` compiler macros | :wrench: | :lipstick: |
+| [vue/define-macros-order](./define-macros-order.md) | enforce order of `defineEmits` and `defineProps` compiler macros | :wrench::bulb: | :lipstick: |
 | [vue/define-props-declaration](./define-props-declaration.md) | enforce declaration style of `defineProps` |  | :hammer: |
+| [vue/enforce-style-attribute](./enforce-style-attribute.md) | enforce or forbid the use of the `scoped` and `module` attributes in SFC top level style tags |  | :hammer: |
 | [vue/html-button-has-type](./html-button-has-type.md) | disallow usage of button without an explicit type attribute |  | :hammer: |
 | [vue/html-comment-content-newline](./html-comment-content-newline.md) | enforce unified line brake in HTML comments | :wrench: | :lipstick: |
 | [vue/html-comment-content-spacing](./html-comment-content-spacing.md) | enforce unified spacing in HTML comments | :wrench: | :lipstick: |
 | [vue/html-comment-indent](./html-comment-indent.md) | enforce consistent indentation in HTML comments | :wrench: | :lipstick: |
 | [vue/match-component-file-name](./match-component-file-name.md) | require component name property to match its file name | :bulb: | :hammer: |
 | [vue/match-component-import-name](./match-component-import-name.md) | require the registered component name to match the imported component name |  | :warning: |
+| [vue/max-lines-per-block](./max-lines-per-block.md) | enforce maximum number of lines in Vue SFC blocks |  | :warning: |
 | [vue/new-line-between-multi-line-property](./new-line-between-multi-line-property.md) | enforce new lines between multi-line properties in Vue components | :wrench: | :lipstick: |
 | [vue/next-tick-style](./next-tick-style.md) | enforce Promise or callback style in `nextTick` | :wrench: | :hammer: |
 | [vue/no-bare-strings-in-template](./no-bare-strings-in-template.md) | disallow the use of bare strings in `<template>` |  | :hammer: |
-| [vue/no-boolean-default](./no-boolean-default.md) | disallow boolean defaults | :wrench: | :hammer: |
+| [vue/no-boolean-default](./no-boolean-default.md) | disallow boolean defaults |  | :hammer: |
+| [vue/no-deprecated-model-definition](./no-deprecated-model-definition.md) | disallow deprecated `model` definition (in Vue.js 3.0.0+) | :bulb: | :warning: |
 | [vue/no-duplicate-attr-inheritance](./no-duplicate-attr-inheritance.md) | enforce `inheritAttrs` to be set to `false` when using `v-bind="$attrs"` |  | :hammer: |
 | [vue/no-empty-component-block](./no-empty-component-block.md) | disallow the `<template>` `<script>` `<style>` block to be empty |  | :hammer: |
 | [vue/no-multiple-objects-in-class](./no-multiple-objects-in-class.md) | disallow to pass multiple objects into array to class |  | :hammer: |
 | [vue/no-potential-component-option-typo](./no-potential-component-option-typo.md) | disallow a potential typo in your component property | :bulb: | :hammer: |
-| [vue/no-ref-object-destructure](./no-ref-object-destructure.md) | disallow destructuring of ref objects that can lead to loss of reactivity |  | :warning: |
+| [vue/no-ref-object-reactivity-loss](./no-ref-object-reactivity-loss.md) | disallow usages of ref objects that can lead to loss of reactivity |  | :warning: |
 | [vue/no-required-prop-with-default](./no-required-prop-with-default.md) | enforce props with default values to be optional | :wrench::bulb: | :warning: |
 | [vue/no-restricted-block](./no-restricted-block.md) | disallow specific block |  | :hammer: |
 | [vue/no-restricted-call-after-await](./no-restricted-call-after-await.md) | disallow asynchronously called restricted methods |  | :hammer: |
 | [vue/no-restricted-class](./no-restricted-class.md) | disallow specific classes in Vue components |  | :warning: |
+| [vue/no-restricted-component-names](./no-restricted-component-names.md) | disallow specific component names | :bulb: | :hammer: |
 | [vue/no-restricted-component-options](./no-restricted-component-options.md) | disallow specific component option |  | :hammer: |
 | [vue/no-restricted-custom-event](./no-restricted-custom-event.md) | disallow specific custom event | :bulb: | :hammer: |
 | [vue/no-restricted-html-elements](./no-restricted-html-elements.md) | disallow specific HTML elements |  | :hammer: |
 | [vue/no-restricted-props](./no-restricted-props.md) | disallow specific props | :bulb: | :hammer: |
 | [vue/no-restricted-static-attribute](./no-restricted-static-attribute.md) | disallow specific attribute |  | :hammer: |
 | [vue/no-restricted-v-bind](./no-restricted-v-bind.md) | disallow specific argument in `v-bind` |  | :hammer: |
+| [vue/no-restricted-v-on](./no-restricted-v-on.md) | disallow specific argument in `v-on` |  | :hammer: |
 | [vue/no-root-v-if](./no-root-v-if.md) | disallow `v-if` directives on root element |  | :hammer: |
+| [vue/no-setup-props-reactivity-loss](./no-setup-props-reactivity-loss.md) | disallow usages that lose the reactivity of `props` passed to `setup` |  | :hammer: |
 | [vue/no-static-inline-styles](./no-static-inline-styles.md) | disallow static inline `style` attributes |  | :hammer: |
 | [vue/no-template-target-blank](./no-template-target-blank.md) | disallow target="_blank" attribute without rel="noopener noreferrer" | :bulb: | :warning: |
 | [vue/no-this-in-before-route-enter](./no-this-in-before-route-enter.md) | disallow `this` usage in a `beforeRouteEnter` method |  | :warning: |
 | [vue/no-undef-components](./no-undef-components.md) | disallow use of undefined components in `<template>` |  | :hammer: |
 | [vue/no-undef-properties](./no-undef-properties.md) | disallow undefined properties |  | :hammer: |
 | [vue/no-unsupported-features](./no-unsupported-features.md) | disallow unsupported Vue.js syntax on the specified version | :wrench: | :hammer: |
+| [vue/no-unused-emit-declarations](./no-unused-emit-declarations.md) | disallow unused emit declarations |  | :hammer: |
 | [vue/no-unused-properties](./no-unused-properties.md) | disallow unused properties |  | :hammer: |
 | [vue/no-unused-refs](./no-unused-refs.md) | disallow unused refs |  | :hammer: |
+| [vue/no-use-v-else-with-v-for](./no-use-v-else-with-v-for.md) | disallow using `v-else-if`/`v-else` on the same element as `v-for` |  | :hammer: |
 | [vue/no-useless-mustaches](./no-useless-mustaches.md) | disallow unnecessary mustache interpolations | :wrench: | :hammer: |
 | [vue/no-useless-v-bind](./no-useless-v-bind.md) | disallow unnecessary `v-bind` directives | :wrench: | :hammer: |
 | [vue/no-v-text](./no-v-text.md) | disallow use of v-text |  | :hammer: |
@@ -261,13 +269,18 @@ For example:
 | [vue/prefer-true-attribute-shorthand](./prefer-true-attribute-shorthand.md) | require shorthand form attribute when `v-bind` value is `true` | :bulb: | :hammer: |
 | [vue/require-direct-export](./require-direct-export.md) | require the component to be directly exported |  | :hammer: |
 | [vue/require-emit-validator](./require-emit-validator.md) | require type definitions in emits | :bulb: | :hammer: |
+| [vue/require-explicit-slots](./require-explicit-slots.md) | require slots to be explicitly defined |  | :warning: |
 | [vue/require-expose](./require-expose.md) | require declare public properties using `expose` | :bulb: | :hammer: |
+| [vue/require-macro-variable-name](./require-macro-variable-name.md) | require a certain macro variable name | :bulb: | :hammer: |
 | [vue/require-name-property](./require-name-property.md) | require a name property in Vue components | :bulb: | :hammer: |
 | [vue/require-prop-comment](./require-prop-comment.md) | require props to have a comment |  | :hammer: |
+| [vue/require-typed-object-prop](./require-typed-object-prop.md) | enforce adding type declarations to object props | :bulb: | :hammer: |
+| [vue/require-typed-ref](./require-typed-ref.md) | require `ref` and `shallowRef` functions to be strongly typed |  | :hammer: |
 | [vue/script-indent](./script-indent.md) | enforce consistent indentation in `<script>` | :wrench: | :lipstick: |
 | [vue/sort-keys](./sort-keys.md) | enforce sort-keys in a manner that is compatible with order-in-components |  | :hammer: |
 | [vue/static-class-names-order](./static-class-names-order.md) | enforce static class names order | :wrench: | :hammer: |
 | [vue/v-for-delimiter-style](./v-for-delimiter-style.md) | enforce `v-for` directive's delimiter style | :wrench: | :lipstick: |
+| [vue/v-if-else-key](./v-if-else-key.md) | require key attribute for conditionally rendered repeated components | :wrench: | :warning: |
 | [vue/v-on-handler-style](./v-on-handler-style.md) | enforce writing style for handlers in `v-on` directives | :wrench: | :hammer: |
 | [vue/valid-define-options](./valid-define-options.md) | enforce valid `defineOptions` compiler macro |  | :warning: |
 
@@ -299,6 +312,7 @@ The following rules extend the rules provided by ESLint itself and apply them to
 | [vue/keyword-spacing](./keyword-spacing.md) | Enforce consistent spacing before and after keywords in `<template>` | :wrench: | :lipstick: |
 | [vue/max-len](./max-len.md) | enforce a maximum line length in `.vue` files |  | :lipstick: |
 | [vue/multiline-ternary](./multiline-ternary.md) | Enforce newlines between operands of ternary expressions in `<template>` | :wrench: | :lipstick: |
+| [vue/no-console](./no-console.md) | Disallow the use of `console` in `<template>` | :bulb: | :hammer: |
 | [vue/no-constant-condition](./no-constant-condition.md) | Disallow constant expressions in conditions in `<template>` |  | :warning: |
 | [vue/no-empty-pattern](./no-empty-pattern.md) | Disallow empty destructuring patterns in `<template>` |  | :warning: |
 | [vue/no-extra-parens](./no-extra-parens.md) | Disallow unnecessary parentheses in `<template>` | :wrench: | :lipstick: |
@@ -313,7 +327,7 @@ The following rules extend the rules provided by ESLint itself and apply them to
 | [vue/object-shorthand](./object-shorthand.md) | Require or disallow method and property shorthand syntax for object literals in `<template>` | :wrench: | :hammer: |
 | [vue/operator-linebreak](./operator-linebreak.md) | Enforce consistent linebreak style for operators in `<template>` | :wrench: | :lipstick: |
 | [vue/prefer-template](./prefer-template.md) | Require template literals instead of string concatenation in `<template>` | :wrench: | :hammer: |
-| [vue/quote-props](./quote-props.md) | Require quotes around object literal property names in `<template>` | :wrench: | :hammer: |
+| [vue/quote-props](./quote-props.md) | Require quotes around object literal property names in `<template>` | :wrench: | :lipstick: |
 | [vue/space-in-parens](./space-in-parens.md) | Enforce consistent spacing inside parentheses in `<template>` | :wrench: | :lipstick: |
 | [vue/space-infix-ops](./space-infix-ops.md) | Require spacing around infix operators in `<template>` | :wrench: | :lipstick: |
 | [vue/space-unary-ops](./space-unary-ops.md) | Enforce consistent spacing before or after unary operators in `<template>` | :wrench: | :lipstick: |
@@ -323,18 +337,21 @@ The following rules extend the rules provided by ESLint itself and apply them to
 
 ## Deprecated
 
-- :warning: We're going to remove deprecated rules in the next major release. Please migrate to successor/new rules.
+- :no_entry_sign: We're going to remove deprecated rules in the next major release. Please migrate to successor/new rules.
 - :innocent: We don't fix bugs which are in deprecated rules since we don't have enough resources.
 
 | Rule ID | Replaced by |
 |:--------|:------------|
+| [vue/component-tags-order](./component-tags-order.md) | [vue/block-order](./block-order.md) |
 | [vue/no-invalid-model-keys](./no-invalid-model-keys.md) | [vue/valid-model-definition](./valid-model-definition.md) |
+| [vue/no-ref-object-destructure](./no-ref-object-destructure.md) | [vue/no-ref-object-reactivity-loss](./no-ref-object-reactivity-loss.md) |
+| [vue/no-setup-props-destructure](./no-setup-props-destructure.md) | [vue/no-setup-props-reactivity-loss](./no-setup-props-reactivity-loss.md) |
 | [vue/script-setup-uses-vars](./script-setup-uses-vars.md) | (no replacement) |
 | [vue/v-on-function-call](./v-on-function-call.md) | [vue/v-on-handler-style](./v-on-handler-style.md) |
 
 ## Removed
 
-- :no_entry_sign: These rules have been removed in a previous major release, after they have been deprecated for a while.
+- :no_entry: These rules have been removed in a previous major release, after they have been deprecated for a while.
 
 | Rule ID | Replaced by | Deprecated in version  | Removed in version |
 |:--------|:------------|:-----------------------|:-------------------|

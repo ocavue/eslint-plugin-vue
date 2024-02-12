@@ -6,11 +6,10 @@
 
 const rule = require('../../../lib/rules/html-button-has-type')
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 
 const ruleTester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 ruleTester.run('html-button-has-type', rule, {
   valid: [
@@ -95,8 +94,8 @@ ruleTester.run('html-button-has-type', rule, {
     },
     {
       filename: 'test.vue',
-      options: [{ button: false }],
       code: '<template><button type="button">Hello World</button></template>',
+      options: [{ button: false }],
       errors: [
         {
           message: 'button is a forbidden value for button type attribute.',
@@ -106,8 +105,8 @@ ruleTester.run('html-button-has-type', rule, {
     },
     {
       filename: 'test.vue',
-      options: [{ submit: false }],
       code: '<template><button type="submit">Hello World</button></template>',
+      options: [{ submit: false }],
       errors: [
         {
           message: 'submit is a forbidden value for button type attribute.',
@@ -117,8 +116,8 @@ ruleTester.run('html-button-has-type', rule, {
     },
     {
       filename: 'test.vue',
-      options: [{ reset: false }],
       code: '<template><button type="reset">Hello World</button></template>',
+      options: [{ reset: false }],
       errors: [
         {
           message: 'reset is a forbidden value for button type attribute.',
@@ -128,12 +127,12 @@ ruleTester.run('html-button-has-type', rule, {
     },
     {
       filename: 'test.vue',
-      options: [{ button: false, submit: false, reset: false }],
       code: `<template>
                 <button type="button">Hello World</button>
                 <button type="submit">Hello World</button>
                 <button type="reset">Hello World</button>
              </template>`,
+      options: [{ button: false, submit: false, reset: false }],
       errors: [
         {
           message: 'button is a forbidden value for button type attribute.',
@@ -154,7 +153,6 @@ ruleTester.run('html-button-has-type', rule, {
     },
     {
       filename: 'test.vue',
-      options: [{ button: true, submit: true, reset: false }],
       code: `<template>
                 <button type="button">Hello World</button>
                 <button type="submit">Hello World</button>
@@ -162,6 +160,7 @@ ruleTester.run('html-button-has-type', rule, {
                 <button type="">Hello World</button>
                 <button type="foo">Hello World</button>
              </template>`,
+      options: [{ button: true, submit: true, reset: false }],
       errors: [
         {
           message: 'reset is a forbidden value for button type attribute.',
@@ -201,16 +200,6 @@ ruleTester.run('html-button-has-type', rule, {
         {
           message: 'A value must be set for button type attribute.',
           column: 25
-        }
-      ]
-    },
-    {
-      filename: 'test.vue',
-      code: `<template><button v-bind:type>Hello World</button></template>`,
-      errors: [
-        {
-          message: 'A value must be set for button type attribute.',
-          column: 19
         }
       ]
     }

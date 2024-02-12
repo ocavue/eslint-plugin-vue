@@ -5,10 +5,13 @@
 'use strict'
 
 const rule = require('../../../lib/rules/new-line-between-multi-line-property')
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const ruleTester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2015,
+    sourceType: 'module'
+  }
 })
 
 ruleTester.run('new-line-between-multi-line-property', rule, {
@@ -280,7 +283,6 @@ ruleTester.run('new-line-between-multi-line-property', rule, {
     // test set insertLine and minLineOfMultilineProperty to 5
     {
       filename: 'test.vue',
-      options: [{ minLineOfMultilineProperty: 5 }],
       code: `
       <script>
       export default {
@@ -320,6 +322,7 @@ ruleTester.run('new-line-between-multi-line-property', rule, {
       }
       </script>
       `,
+      options: [{ minLineOfMultilineProperty: 5 }],
       errors: [
         {
           message:
@@ -331,7 +334,6 @@ ruleTester.run('new-line-between-multi-line-property', rule, {
     // test js comments
     {
       filename: 'test.vue',
-      options: [{ minLineOfMultilineProperty: 5 }],
       code: `
       <script>
       export default {
@@ -373,6 +375,7 @@ ruleTester.run('new-line-between-multi-line-property', rule, {
       }
       </script>
       `,
+      options: [{ minLineOfMultilineProperty: 5 }],
       errors: [
         {
           message:
@@ -384,7 +387,6 @@ ruleTester.run('new-line-between-multi-line-property', rule, {
     // test js doc
     {
       filename: 'test.vue',
-      options: [],
       code: `
       <script>
       export default {
@@ -436,6 +438,7 @@ ruleTester.run('new-line-between-multi-line-property', rule, {
       }
       </script>
       `,
+      options: [],
       errors: [
         {
           message:

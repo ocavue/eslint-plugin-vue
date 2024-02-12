@@ -5,12 +5,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/valid-v-for')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('valid-v-for', rule, {
@@ -273,9 +272,6 @@ tester.run('valid-v-for', rule, {
     },
     {
       filename: 'test.vue',
-      errors: [
-        "Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive."
-      ],
       code: `
         <template>
           <template v-for="x in xs">
@@ -286,13 +282,13 @@ tester.run('valid-v-for', rule, {
             </template>
           </template>
         </template>
-      `
+      `,
+      errors: [
+        "Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive."
+      ]
     },
     {
       filename: 'test.vue',
-      errors: [
-        "Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive."
-      ],
       code: `
         <template>
           <template v-for="x in xs">
@@ -303,13 +299,13 @@ tester.run('valid-v-for', rule, {
             </template>
           </template>
         </template>
-      `
+      `,
+      errors: [
+        "Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive."
+      ]
     },
     {
       filename: 'test.vue',
-      errors: [
-        "Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive."
-      ],
       code: `
         <template>
           <template v-for="x in xs">
@@ -320,7 +316,10 @@ tester.run('valid-v-for', rule, {
             </template>
           </template>
         </template>
-      `
+      `,
+      errors: [
+        "Expected 'v-bind:key' directive to use the variables which are defined by the 'v-for' directive."
+      ]
     },
     // empty value
     {

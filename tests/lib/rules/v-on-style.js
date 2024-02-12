@@ -5,12 +5,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/v-on-style')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('v-on-style', rule, {
@@ -47,16 +46,16 @@ tester.run('v-on-style', rule, {
     },
     {
       filename: 'test.vue',
-      options: ['shorthand'],
       code: '<template><div v-on:foo="foo"></div></template>',
       output: '<template><div @foo="foo"></div></template>',
+      options: ['shorthand'],
       errors: ["Expected '@' instead of 'v-on:'."]
     },
     {
       filename: 'test.vue',
-      options: ['longform'],
       code: '<template><div @foo="foo"></div></template>',
       output: '<template><div v-on:foo="foo"></div></template>',
+      options: ['longform'],
       errors: ["Expected 'v-on:' instead of '@'."]
     }
   ]

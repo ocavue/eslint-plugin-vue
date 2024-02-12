@@ -5,7 +5,7 @@
 'use strict'
 
 const rule = require('../../../lib/rules/no-reserved-component-names')
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 
 const htmlElements = require('../../../lib/utils/html-elements.json')
 const RESERVED_NAMES_IN_HTML = new Set([
@@ -245,7 +245,6 @@ const invalidElements = [
   'menu',
   'Menu',
   'menuitem',
-  'menuitem',
   'summary',
   'Summary',
   'template',
@@ -413,7 +412,7 @@ const vue2BuiltInComponents = [
 
 const vue3BuiltInComponents = ['teleport', 'Teleport', 'suspense', 'Suspense']
 
-const parserOptions = {
+const languageOptions = {
   ecmaVersion: 2018,
   sourceType: 'module'
 }
@@ -427,7 +426,7 @@ ruleTester.run('no-reserved-component-names', rule, {
         export default {
         }
       `,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -436,7 +435,7 @@ ruleTester.run('no-reserved-component-names', rule, {
           ...name
         }
       `,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -445,7 +444,7 @@ ruleTester.run('no-reserved-component-names', rule, {
           name: 'FooBar'
         }
       `,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -460,17 +459,17 @@ ruleTester.run('no-reserved-component-names', rule, {
           disallowVue3BuiltInComponents: true
         }
       ],
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
       code: `Vue.component('FooBar', {})`,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
       code: `app.component('FooBar', {})`,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.js',
@@ -479,12 +478,12 @@ ruleTester.run('no-reserved-component-names', rule, {
           name: 'foo!bar'
         })
       `,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
       code: `Vue.component(\`fooBar\${foo}\`, component)`,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -495,8 +494,10 @@ ruleTester.run('no-reserved-component-names', rule, {
           }
         </script>
       `,
-      parser: require.resolve('vue-eslint-parser'),
-      parserOptions
+      languageOptions: {
+        parser: require('vue-eslint-parser'),
+        ...languageOptions
+      }
     },
     {
       filename: 'test.vue',
@@ -507,14 +508,16 @@ ruleTester.run('no-reserved-component-names', rule, {
           }
         </script>
       `,
-      parser: require.resolve('vue-eslint-parser'),
-      parserOptions
+      languageOptions: {
+        parser: require('vue-eslint-parser'),
+        ...languageOptions
+      }
     },
     // https://github.com/vuejs/eslint-plugin-vue/issues/1018
     {
       filename: 'test.js',
       code: `fn1(component.data)`,
-      parserOptions
+      languageOptions
     },
     ...vue2BuiltInComponents.map((name) => ({
       filename: `${name}.vue`,
@@ -523,7 +526,7 @@ ruleTester.run('no-reserved-component-names', rule, {
             name: '${name}'
           }
         `,
-      parserOptions
+      languageOptions
     })),
     ...vue3BuiltInComponents.map((name) => ({
       filename: `${name}.vue`,
@@ -532,7 +535,7 @@ ruleTester.run('no-reserved-component-names', rule, {
             name: '${name}'
           }
         `,
-      parserOptions
+      languageOptions
     })),
     ...vue3BuiltInComponents.map((name) => ({
       filename: `${name}.vue`,
@@ -541,26 +544,32 @@ ruleTester.run('no-reserved-component-names', rule, {
             name: '${name}'
           }
         `,
-      parserOptions,
+      languageOptions,
       options: [{ disallowVueBuiltInComponents: true }]
     })),
     {
       filename: 'test.vue',
       code: `<script setup> defineOptions({}) </script>`,
-      parser: require.resolve('vue-eslint-parser'),
-      parserOptions
+      languageOptions: {
+        parser: require('vue-eslint-parser'),
+        ...languageOptions
+      }
     },
     {
       filename: 'test.vue',
       code: `<script setup> defineOptions({ ...name }) </script>`,
-      parser: require.resolve('vue-eslint-parser'),
-      parserOptions
+      languageOptions: {
+        parser: require('vue-eslint-parser'),
+        ...languageOptions
+      }
     },
     {
       filename: 'test.vue',
       code: `<script setup> defineOptions({ name: 'Foo' }) </script>`,
-      parser: require.resolve('vue-eslint-parser'),
-      parserOptions
+      languageOptions: {
+        parser: require('vue-eslint-parser'),
+        ...languageOptions
+      }
     }
   ],
 
@@ -572,7 +581,7 @@ ruleTester.run('no-reserved-component-names', rule, {
             name: '${name}'
           }
         `,
-      parserOptions,
+      languageOptions,
       errors: [
         {
           messageId: RESERVED_NAMES_IN_HTML.has(name)
@@ -587,7 +596,7 @@ ruleTester.run('no-reserved-component-names', rule, {
     ...invalidElements.map((name) => ({
       filename: 'test.vue',
       code: `Vue.component('${name}', component)`,
-      parserOptions,
+      languageOptions,
       errors: [
         {
           messageId: RESERVED_NAMES_IN_HTML.has(name)
@@ -602,7 +611,7 @@ ruleTester.run('no-reserved-component-names', rule, {
     ...invalidElements.map((name) => ({
       filename: 'test.vue',
       code: `app.component('${name}', component)`,
-      parserOptions,
+      languageOptions,
       errors: [
         {
           messageId: RESERVED_NAMES_IN_HTML.has(name)
@@ -617,7 +626,7 @@ ruleTester.run('no-reserved-component-names', rule, {
     ...invalidElements.map((name) => ({
       filename: 'test.vue',
       code: `Vue.component(\`${name}\`, {})`,
-      parserOptions,
+      languageOptions,
       errors: [
         {
           messageId: RESERVED_NAMES_IN_HTML.has(name)
@@ -632,7 +641,7 @@ ruleTester.run('no-reserved-component-names', rule, {
     ...invalidElements.map((name) => ({
       filename: 'test.vue',
       code: `app.component(\`${name}\`, {})`,
-      parserOptions,
+      languageOptions,
       errors: [
         {
           messageId: RESERVED_NAMES_IN_HTML.has(name)
@@ -651,7 +660,7 @@ ruleTester.run('no-reserved-component-names', rule, {
             '${name}': {},
           }
         }`,
-      parserOptions,
+      languageOptions,
       errors: [
         {
           messageId: RESERVED_NAMES_IN_HTML.has(name)
@@ -666,8 +675,10 @@ ruleTester.run('no-reserved-component-names', rule, {
     ...invalidElements.map((name) => ({
       filename: `${name}.vue`,
       code: `<script setup> defineOptions({name: '${name}'}) </script>`,
-      parser: require.resolve('vue-eslint-parser'),
-      parserOptions,
+      languageOptions: {
+        parser: require('vue-eslint-parser'),
+        ...languageOptions
+      },
       errors: [
         {
           messageId: RESERVED_NAMES_IN_HTML.has(name)
@@ -685,7 +696,7 @@ ruleTester.run('no-reserved-component-names', rule, {
             name: '${name}'
           }
         `,
-      parserOptions,
+      languageOptions,
       options: [{ disallowVueBuiltInComponents: true }],
       errors: [
         {
@@ -703,7 +714,7 @@ ruleTester.run('no-reserved-component-names', rule, {
             name: '${name}'
           }
         `,
-      parserOptions,
+      languageOptions,
       options: [{ disallowVue3BuiltInComponents: true }],
       errors: [
         {
@@ -721,7 +732,7 @@ ruleTester.run('no-reserved-component-names', rule, {
             name: '${name}'
           }
         `,
-      parserOptions,
+      languageOptions,
       options: [{ disallowVue3BuiltInComponents: true }],
       errors: [
         {

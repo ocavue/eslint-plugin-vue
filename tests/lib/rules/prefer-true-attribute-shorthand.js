@@ -4,12 +4,12 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/prefer-true-attribute-shorthand')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
     ecmaVersion: 2020,
     sourceType: 'module'
   }
@@ -157,6 +157,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
       <template>
         <MyComp v-bind:show="true" />
       </template>`,
+      output: null,
       errors: [
         {
           messageId: 'expectShort',
@@ -172,8 +173,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
             }
           ]
         }
-      ],
-      output: null
+      ]
     },
     {
       filename: 'test.vue',
@@ -181,6 +181,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
       <template>
         <MyComp :show="true" />
       </template>`,
+      output: null,
       errors: [
         {
           messageId: 'expectShort',
@@ -196,8 +197,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
             }
           ]
         }
-      ],
-      output: null
+      ]
     },
     {
       filename: 'test.vue',
@@ -205,6 +205,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
       <template>
         <MyComp v-bind:show="true" />
       </template>`,
+      output: null,
       options: ['always'],
       errors: [
         {
@@ -221,8 +222,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
             }
           ]
         }
-      ],
-      output: null
+      ]
     },
     {
       filename: 'test.vue',
@@ -230,6 +230,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
       <template>
         <MyComp :show="true" />
       </template>`,
+      output: null,
       options: ['always'],
       errors: [
         {
@@ -246,8 +247,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
             }
           ]
         }
-      ],
-      output: null
+      ]
     },
     {
       filename: 'test.vue',
@@ -255,6 +255,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
       <template>
         <MyComp show />
       </template>`,
+      output: null,
       options: ['never'],
       errors: [
         {
@@ -276,8 +277,7 @@ tester.run('prefer-true-attribute-shorthand', rule, {
             }
           ]
         }
-      ],
-      output: null
+      ]
     }
   ]
 })

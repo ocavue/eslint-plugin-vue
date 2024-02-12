@@ -4,12 +4,12 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/multi-word-component-names')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
     ecmaVersion: 2020,
     sourceType: 'module'
   }
@@ -165,14 +165,14 @@ tester.run('multi-word-component-names', rule, {
     },
     {
       filename: 'test.vue',
-      options: [{ ignores: ['Todo'] }],
       code: `
       <script>
       export default {
         name: 'Todo'
       }
       </script>
-      `
+      `,
+      options: [{ ignores: ['Todo'] }]
     },
     {
       filename: 'test.js',
@@ -314,7 +314,6 @@ tester.run('multi-word-component-names', rule, {
     },
     {
       filename: 'test.vue',
-      options: [{ ignores: ['Todo'] }],
       code: `
       <script>
       export default {
@@ -322,6 +321,7 @@ tester.run('multi-word-component-names', rule, {
       }
       </script>
       `,
+      options: [{ ignores: ['Todo'] }],
       errors: [
         {
           message: 'Component name "Item" should always be multi-word.',

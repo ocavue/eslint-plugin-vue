@@ -6,23 +6,18 @@
 
 const rule = require('../../../lib/rules/html-comment-content-spacing')
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
-    ecmaVersion: 2015
-  }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 tester.run('html-comment-content-spacing', rule, {
   valid: [
-    {
-      code: `
-        <template>
-          <!-- comment -->
-        </template>
-        `
-    },
+    `
+      <template>
+        <!-- comment -->
+      </template>
+    `,
     {
       code: `
         <template>
@@ -178,24 +173,20 @@ tester.run('html-comment-content-spacing', rule, {
     },
 
     // IE conditional comments
-    {
-      code: `
-        <template>
-          <!--[if IE 8]>
-          <div>IE8 only</div>
-          <![endif]-->
-        </template>
-        `
-    },
-    {
-      code: `
-        <template>
-          <!--[if !IE]><!-->
-          <div>not IE only</div>
-          <!--<![endif]-->
-        </template>
-        `
-    }
+    `
+      <template>
+        <!--[if IE 8]>
+        <div>IE8 only</div>
+        <![endif]-->
+      </template>
+    `,
+    `
+      <template>
+        <!--[if !IE]><!-->
+        <div>not IE only</div>
+        <!--<![endif]-->
+      </template>
+    `
   ],
 
   invalid: [
@@ -205,12 +196,12 @@ tester.run('html-comment-content-spacing', rule, {
           <!--comment-->
         </template>
         `,
-      options: ['always'],
       output: `
         <template>
           <!-- comment -->
         </template>
         `,
+      options: ['always'],
       errors: [
         {
           message: "Expected space after '<!--'.",
@@ -232,12 +223,12 @@ tester.run('html-comment-content-spacing', rule, {
           <!-- comment -->
         </template>
         `,
-      options: ['never'],
       output: `
         <template>
           <!--comment-->
         </template>
         `,
+      options: ['never'],
       errors: [
         {
           message: "Unexpected space after '<!--'.",
@@ -259,12 +250,12 @@ tester.run('html-comment-content-spacing', rule, {
           <!-- \t \t  \t\tcomment \t \t  \t\t-->
         </template>
         `,
-      options: ['never'],
       output: `
         <template>
           <!--comment-->
         </template>
         `,
+      options: ['never'],
       errors: [
         {
           message: "Unexpected space after '<!--'.",
@@ -287,8 +278,8 @@ tester.run('html-comment-content-spacing', rule, {
           <!--++++++++++++++++comment++++++++++++++++-->
         </template>
         `,
-      options: ['always', { exceptions: ['+'] }],
       output: null,
+      options: ['always', { exceptions: ['+'] }],
       errors: [
         'Expected space after exception block.',
         'Expected space before exception block.'
@@ -300,8 +291,8 @@ tester.run('html-comment-content-spacing', rule, {
           <!--*****comment**-->
         </template>
         `,
-      options: ['always', { exceptions: ['*'] }],
       output: null,
+      options: ['always', { exceptions: ['*'] }],
       errors: [
         'Expected space after exception block.',
         'Expected space before exception block.'
@@ -313,12 +304,12 @@ tester.run('html-comment-content-spacing', rule, {
           <!--#+#-#+#-#+#-comment #+#-->
         </template>
         `,
-      options: ['always', { exceptions: ['#+#-'] }],
       output: `
         <template>
           <!--#+#-#+#-#+#-comment #+# -->
         </template>
         `,
+      options: ['always', { exceptions: ['#+#-'] }],
       errors: [
         'Expected space after exception block.',
         "Expected space before '-->'."
@@ -330,8 +321,8 @@ tester.run('html-comment-content-spacing', rule, {
           <!--*****comment++++-->
         </template>
         `,
-      options: ['always', { exceptions: ['*', '++'] }],
       output: null,
+      options: ['always', { exceptions: ['*', '++'] }],
       errors: [
         'Expected space after exception block.',
         {
@@ -347,8 +338,8 @@ tester.run('html-comment-content-spacing', rule, {
           <!--*****comment+++++-->
         </template>
         `,
-      options: ['always', { exceptions: ['*', '++'] }],
       output: null,
+      options: ['always', { exceptions: ['*', '++'] }],
       errors: [
         'Expected space after exception block.',
         {

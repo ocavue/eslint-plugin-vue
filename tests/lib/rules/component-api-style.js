@@ -4,12 +4,15 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/component-api-style')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2015,
+    sourceType: 'module'
+  }
 })
 
 tester.run('component-api-style', rule, {
@@ -43,7 +46,6 @@ tester.run('component-api-style', rule, {
     },
     {
       filename: 'test.vue',
-      options: [['options']],
       code: `
       <script>
       export default {
@@ -56,7 +58,8 @@ tester.run('component-api-style', rule, {
         // ...
       }
       </script>
-      `
+      `,
+      options: [['options']]
     },
     {
       filename: 'test.js',
@@ -76,7 +79,6 @@ tester.run('component-api-style', rule, {
     },
     {
       filename: 'test.js',
-      options: [['options']],
       code: `
       import { defineComponent } from 'vue'
       defineComponent({
@@ -88,21 +90,21 @@ tester.run('component-api-style', rule, {
         },
         // ...
       })
-      `
+      `,
+      options: [['options']]
     },
     {
       filename: 'test.vue',
-      options: [['script-setup']],
       code: `
       <script setup>
       import { ref } from 'vue'
       const msg = ref('Hello World!')
       </script>
-      `
+      `,
+      options: [['script-setup']]
     },
     {
       filename: 'test.js',
-      options: [['script-setup']],
       code: `
       import { ref, defineComponent } from 'vue'
       defineComponent({
@@ -115,11 +117,11 @@ tester.run('component-api-style', rule, {
           }
         }
       })
-      `
+      `,
+      options: [['script-setup']]
     },
     {
       filename: 'test.js',
-      options: [['script-setup']],
       code: `
       import { defineComponent } from 'vue'
       defineComponent({
@@ -131,11 +133,11 @@ tester.run('component-api-style', rule, {
         },
         // ...
       })
-      `
+      `,
+      options: [['script-setup']]
     },
     {
       filename: 'test.vue',
-      options: [['composition']],
       code: `
       <script>
       import { ref } from 'vue'
@@ -150,11 +152,11 @@ tester.run('component-api-style', rule, {
         }
       }
       </script>
-      `
+      `,
+      options: [['composition']]
     },
     {
       filename: 'test.vue',
-      options: [['composition-vue2']],
       code: `
       <script>
       import { ref } from 'vue'
@@ -172,12 +174,12 @@ tester.run('component-api-style', rule, {
         }
       }
       </script>
-      `
+      `,
+      options: [['composition-vue2']]
     },
     {
       // https://github.com/vuejs/eslint-plugin-vue/issues/1720
       filename: 'test.vue',
-      options: [['composition']],
       code: `
       <template>
         <div id="app">
@@ -201,7 +203,8 @@ tester.run('component-api-style', rule, {
           Navigation,
         },
       })
-      </script>`
+      </script>`,
+      options: [['composition']]
     }
   ],
   invalid: [
@@ -351,7 +354,6 @@ tester.run('component-api-style', rule, {
     },
     {
       filename: 'test.vue',
-      options: [['script-setup']],
       code: `
       <script>
       export default {
@@ -365,6 +367,7 @@ tester.run('component-api-style', rule, {
       }
       </script>
       `,
+      options: [['script-setup']],
       errors: [
         {
           message:
@@ -392,7 +395,6 @@ tester.run('component-api-style', rule, {
     },
     {
       filename: 'test.vue',
-      options: [['composition']],
       code: `
       <script>
       export default {
@@ -406,6 +408,7 @@ tester.run('component-api-style', rule, {
       }
       </script>
       `,
+      options: [['composition']],
       errors: [
         {
           message:
@@ -417,7 +420,6 @@ tester.run('component-api-style', rule, {
     },
     {
       filename: 'test.vue',
-      options: [['composition']],
       code: `
       <script>
       export default {
@@ -452,6 +454,7 @@ tester.run('component-api-style', rule, {
       }
       </script>
       `,
+      options: [['composition']],
       errors: [
         {
           message:
@@ -623,7 +626,6 @@ tester.run('component-api-style', rule, {
     },
     {
       filename: 'test.vue',
-      options: [['composition-vue2']],
       code: `
       <script>
       export default {
@@ -637,6 +639,7 @@ tester.run('component-api-style', rule, {
       }
       </script>
       `,
+      options: [['composition-vue2']],
       errors: [
         {
           message:
@@ -648,7 +651,6 @@ tester.run('component-api-style', rule, {
     },
     {
       filename: 'test.vue',
-      options: [['composition-vue2']],
       code: `
       <script>
       export default {
@@ -683,6 +685,7 @@ tester.run('component-api-style', rule, {
       }
       </script>
       `,
+      options: [['composition-vue2']],
       errors: [
         {
           message:

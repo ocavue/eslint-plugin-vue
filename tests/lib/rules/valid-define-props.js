@@ -4,12 +4,15 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/valid-define-props')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2015,
+    sourceType: 'module'
+  }
 })
 
 tester.run('valid-define-props', rule, {
@@ -40,7 +43,9 @@ tester.run('valid-define-props', rule, {
         defineProps<{ msg?:string }>()
       </script>
       `,
-      parserOptions: { parser: require.resolve('@typescript-eslint/parser') }
+      languageOptions: {
+        parserOptions: { parser: require.resolve('@typescript-eslint/parser') }
+      }
     },
     {
       filename: 'test.vue',
@@ -72,9 +77,6 @@ tester.run('valid-define-props', rule, {
     {
       // https://github.com/vuejs/eslint-plugin-vue/issues/1656
       filename: 'test.vue',
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
       code: `
       <script setup lang="ts">
       import type { PropType } from 'vue';
@@ -89,13 +91,15 @@ tester.run('valid-define-props', rule, {
         myProp: (x: X) => true,
       });
       </script>
-      `
+      `,
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     },
     {
       filename: 'test.vue',
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
       code: `
       <script setup lang="ts">
       import type { PropType } from 'vue';
@@ -111,7 +115,12 @@ tester.run('valid-define-props', rule, {
         myProp: (x: typeof str) => true,
       });
       </script>
-      `
+      `,
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     },
     {
       filename: 'test.vue',
@@ -149,13 +158,15 @@ tester.run('valid-define-props', rule, {
         defineProps<{ msg?:string }>({ msg: String })
       </script>
       `,
-      parserOptions: { parser: require.resolve('@typescript-eslint/parser') },
       errors: [
         {
           message: '`defineProps` has both a type-only props and an argument.',
           line: 4
         }
-      ]
+      ],
+      languageOptions: {
+        parserOptions: { parser: require.resolve('@typescript-eslint/parser') }
+      }
     },
     {
       filename: 'test.vue',

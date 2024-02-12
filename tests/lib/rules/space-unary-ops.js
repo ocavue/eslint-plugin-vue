@@ -3,12 +3,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/space-unary-ops')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('space-unary-ops', rule, {
@@ -50,8 +49,8 @@ tester.run('space-unary-ops', rule, {
     },
     {
       code: '<template><div :[!a]="!a" /></template>',
-      options: [{ nonwords: true }],
       output: '<template><div :[!a]="! a" /></template>',
+      options: [{ nonwords: true }],
       errors: ["Unary operator '!' must be followed by whitespace."]
     },
 

@@ -5,12 +5,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/no-parsing-error')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('no-parsing-error', rule, {
@@ -206,6 +205,7 @@ tester.run('no-parsing-error', rule, {
 
     // https://github.com/vuejs/eslint-plugin-vue/issues/1403
     {
+      filename: 'test.vue',
       code: `
       <template>
         <div>
@@ -216,8 +216,7 @@ tester.run('no-parsing-error', rule, {
           </p>
         </div>
       </template>
-      `,
-      filename: 'test.vue'
+      `
     }
   ],
   invalid: [

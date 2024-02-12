@@ -4,12 +4,12 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/define-emits-declaration')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
     ecmaVersion: 2020,
     sourceType: 'module'
   }
@@ -35,8 +35,10 @@ tester.run('define-emits-declaration', rule, {
         }>()
         </script>
        `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
       }
     },
     {
@@ -49,10 +51,12 @@ tester.run('define-emits-declaration', rule, {
         }>()
         </script>
        `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
-      options: ['type-based']
+      options: ['type-based'],
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     },
     {
       filename: 'test.vue',
@@ -65,6 +69,40 @@ tester.run('define-emits-declaration', rule, {
     },
     {
       filename: 'test.vue',
+      code: `
+        <script setup lang="ts">
+        const emit = defineEmits<{
+          change: [id: number]
+          update: [value: string]
+        }>()
+        </script>
+       `,
+      options: ['type-based'],
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
+    },
+    {
+      filename: 'test.vue',
+      code: `
+        <script setup lang="ts">
+        const emit = defineEmits<{
+          change: [id: number]
+          update: [value: string]
+        }>()
+        </script>
+       `,
+      options: ['type-literal'],
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
+    },
+    {
+      filename: 'test.vue',
       // ignore code without defineEmits
       code: `
         <script setup lang="ts">
@@ -73,8 +111,10 @@ tester.run('define-emits-declaration', rule, {
         })
         </script>
        `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
       }
     },
     {
@@ -82,7 +122,7 @@ tester.run('define-emits-declaration', rule, {
       code: `
          <script lang="ts">
          import { PropType } from 'vue'
- 
+
          export default {
            props: {
              kind: { type: String as PropType<'primary' | 'secondary'> },
@@ -91,8 +131,10 @@ tester.run('define-emits-declaration', rule, {
          }
          </script>
        `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
       }
     }
   ],
@@ -106,7 +148,7 @@ tester.run('define-emits-declaration', rule, {
        `,
       errors: [
         {
-          message: 'Use type-based declaration instead of runtime declaration.',
+          message: 'Use type based declaration instead of runtime declaration.',
           line: 3
         }
       ]
@@ -118,13 +160,33 @@ tester.run('define-emits-declaration', rule, {
        const emit = defineEmits(['change', 'update'])
        </script>
        `,
+      options: ['type-based'],
       errors: [
         {
-          message: 'Use type-based declaration instead of runtime declaration.',
+          message: 'Use type based declaration instead of runtime declaration.',
+          line: 3
+        }
+      ]
+    },
+    {
+      filename: 'test.vue',
+      code: `
+       <script setup lang="ts">
+       const emit = defineEmits(['change', 'update'])
+       </script>
+       `,
+      options: ['type-literal'],
+      errors: [
+        {
+          message: 'Use type based declaration instead of runtime declaration.',
           line: 3
         }
       ],
-      options: ['type-based']
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     },
     {
       filename: 'test.vue',
@@ -136,16 +198,92 @@ tester.run('define-emits-declaration', rule, {
         }>()
         </script>
        `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
+      options: ['runtime'],
       errors: [
         {
-          message: 'Use runtime declaration instead of type-based declaration.',
+          message: 'Use runtime declaration instead of type based declaration.',
           line: 3
         }
       ],
-      options: ['runtime']
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
+    },
+    {
+      filename: 'test.vue',
+      code: `
+        <script setup lang="ts">
+        const emit = defineEmits<{
+          (e: 'change', id: number): void
+          (e: 'update', value: string): void
+        }>()
+        </script>
+       `,
+      options: ['type-literal'],
+      errors: [
+        {
+          message:
+            'Use new type literal declaration instead of the old call signature declaration.',
+          line: 4
+        },
+        {
+          message:
+            'Use new type literal declaration instead of the old call signature declaration.',
+          line: 5
+        }
+      ],
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
+    },
+    {
+      filename: 'test.vue',
+      code: `
+        <script setup lang="ts">
+        const emit = defineEmits<{
+          'change': [id: number]
+          (e: 'update', value: string): void
+        }>()
+        </script>
+       `,
+      options: ['type-literal'],
+      errors: [
+        {
+          message:
+            'Use new type literal declaration instead of the old call signature declaration.',
+          line: 5
+        }
+      ],
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
+    },
+    {
+      filename: 'test.vue',
+      code: `
+        <script setup lang="ts">
+        const emit = defineEmits<(e: 'change', id: number) => void>()
+        </script>
+        `,
+      options: ['type-literal'],
+      errors: [
+        {
+          message:
+            'Use new type literal declaration instead of the old call signature declaration.',
+          line: 3
+        }
+      ],
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     }
   ]
 })

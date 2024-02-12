@@ -13,7 +13,7 @@ For example:
 # rule description (vue/rule-name)
 
 - :gear: This rule is included in `"plugin:vue/strongly-recommended"` and `"plugin:vue/recommended"`.
-- :warning: This rule was **deprecated**.
+- :no_entry_sign: This rule was **deprecated**.
 - :wrench: The `--fix` option on the [command line](https://eslint.org/docs/user-guide/command-line-interface#fix) can automatically fix some of the problems reported by this rule.
 ```
 */
@@ -95,13 +95,13 @@ class DocFile {
           (name) => `[vue/${name}](${name}.md) rule`
         )
         notes.push(
-          `- :no_entry_sign: This rule was **removed** in eslint-plugin-vue ${
+          `- :no_entry: This rule was **removed** in eslint-plugin-vue ${
             meta.removedInVersion
           } and replaced by ${formatItems(replacedRules)}.`
         )
       } else {
         notes.push(
-          `- :no_entry_sign: This rule was **removed** in eslint-plugin-vue ${meta.removedInVersion}.`
+          `- :no_entry: This rule was **removed** in eslint-plugin-vue ${meta.removedInVersion}.`
         )
       }
     } else if (meta.deprecated) {
@@ -110,14 +110,15 @@ class DocFile {
           (name) => `[vue/${name}](${name}.md) rule`
         )
         notes.push(
-          `- :warning: This rule was **deprecated** and replaced by ${formatItems(
+          `- :no_entry_sign: This rule was **deprecated** and replaced by ${formatItems(
             replacedRules
           )}.`
         )
       } else {
-        notes.push(`- :warning: This rule was **deprecated**.`)
+        notes.push(`- :no_entry_sign: This rule was **deprecated**.`)
       }
-    } else if (meta.docs.categories) {
+    }
+    if (meta.docs?.categories) {
       const presets = getPresetIds(meta.docs.categories).map(
         (categoryId) => `\`"plugin:vue/${categoryId}"\``
       )
@@ -194,9 +195,9 @@ This rule was introduced in eslint-plugin-vue ${this.since}
 - [Rule source](https://github.com/vuejs/eslint-plugin-vue/blob/master/lib/rules/${name}.js)
 - [Test source](https://github.com/vuejs/eslint-plugin-vue/blob/master/tests/lib/rules/${name}.js)
 ${
-  meta.docs.extensionRule
+  meta.docs.extensionSource
     ? `
-<sup>Taken with ❤️ [from ESLint core](${meta.docs.coreRuleUrl})</sup>
+<sup>Taken with ❤️ [from ${meta.docs.extensionSource.name}](${meta.docs.extensionSource.url})</sup>
 `
     : ''
 }`

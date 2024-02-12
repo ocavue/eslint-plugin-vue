@@ -6,12 +6,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/v-for-delimiter-style')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('v-for-delimiter-style', rule, {
@@ -94,9 +93,9 @@ tester.run('v-for-delimiter-style', rule, {
     },
     {
       filename: 'test.vue',
-      options: ['in'],
       code: '<template><div v-for="x of xs"></div></template>',
       output: '<template><div v-for="x in xs"></div></template>',
+      options: ['in'],
       errors: [
         {
           message: "Expected 'in' instead of 'of' in 'v-for'.",
@@ -106,9 +105,9 @@ tester.run('v-for-delimiter-style', rule, {
     },
     {
       filename: 'test.vue',
-      options: ['of'],
       code: '<template><div v-for="x in xs"></div></template>',
       output: '<template><div v-for="x of xs"></div></template>',
+      options: ['of'],
       errors: [
         {
           message: "Expected 'of' instead of 'in' in 'v-for'.",

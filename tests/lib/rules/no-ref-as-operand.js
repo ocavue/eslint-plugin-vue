@@ -3,12 +3,15 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/no-ref-as-operand')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2020, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2020,
+    sourceType: 'module'
+  }
 })
 
 tester.run('no-ref-as-operand', rule, {
@@ -131,26 +134,21 @@ tester.run('no-ref-as-operand', rule, {
     const count = ref(0)
     const foo = count
     `,
-    {
-      code: `
+    `
       <script>
         import { ref, computed, toRef, customRef, shallowRef } from 'vue'
         const foo = shallowRef({})
         foo[bar] = 123
       </script>
-      `
-    },
-    {
-      code: `
+    `,
+    `
       <script>
         import { ref, computed, toRef, customRef, shallowRef } from 'vue'
         const foo = shallowRef({})
         const isComp = foo.effect
       </script>
-      `
-    },
-    {
-      code: `
+    `,
+    `
       <script>
       import { ref } from 'vue'
       let foo;
@@ -159,10 +157,8 @@ tester.run('no-ref-as-operand', rule, {
         foo = ref(5);
       }
       </script>
-      `
-    },
-    {
-      code: `
+    `,
+    `
       <script>
       import { ref } from 'vue'
       let foo = undefined;
@@ -171,8 +167,31 @@ tester.run('no-ref-as-operand', rule, {
         foo = ref(5);
       }
       </script>
-      `
+    `,
+    `
+    <script setup>
+    const model = defineModel();
+    console.log(model.value);
+    function process() {
+      if (model.value) console.log('foo')
     }
+    function update(value) {
+      model.value = value;
+    }
+    </script>
+    `,
+    `
+    <script setup>
+    const [model, mod] = defineModel();
+    console.log(model.value);
+    function process() {
+      if (model.value) console.log('foo')
+    }
+    function update(value) {
+      model.value = value;
+    }
+    </script>
+    `
   ],
   invalid: [
     {
@@ -725,6 +744,82 @@ tester.run('no-ref-as-operand', rule, {
             'Must use `.value` to read or write the value wrapped by `ref()`.',
           line: 10,
           column: 7
+        }
+      ]
+    },
+    {
+      code: `
+      <script>
+      let model = defineModel();
+      console.log(model);
+      function process() {
+        if (model) console.log('foo')
+      }
+      function update(value) {
+        model = value;
+      }
+      </script>
+      `,
+      output: `
+      <script>
+      let model = defineModel();
+      console.log(model);
+      function process() {
+        if (model.value) console.log('foo')
+      }
+      function update(value) {
+        model.value = value;
+      }
+      </script>
+      `,
+      errors: [
+        {
+          message:
+            'Must use `.value` to read or write the value wrapped by `defineModel()`.',
+          line: 6
+        },
+        {
+          message:
+            'Must use `.value` to read or write the value wrapped by `defineModel()`.',
+          line: 9
+        }
+      ]
+    },
+    {
+      code: `
+      <script setup>
+      let [model, mod] = defineModel();
+      console.log(model);
+      function process() {
+        if (model) console.log('foo')
+      }
+      function update(value) {
+        model = value;
+      }
+      </script>
+      `,
+      output: `
+      <script setup>
+      let [model, mod] = defineModel();
+      console.log(model);
+      function process() {
+        if (model.value) console.log('foo')
+      }
+      function update(value) {
+        model.value = value;
+      }
+      </script>
+      `,
+      errors: [
+        {
+          message:
+            'Must use `.value` to read or write the value wrapped by `defineModel()`.',
+          line: 6
+        },
+        {
+          message:
+            'Must use `.value` to read or write the value wrapped by `defineModel()`.',
+          line: 9
         }
       ]
     }

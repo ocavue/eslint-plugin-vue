@@ -3,12 +3,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/no-restricted-html-elements')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('no-restricted-html-elements', rule, {
@@ -38,38 +37,38 @@ tester.run('no-restricted-html-elements', rule, {
     {
       filename: 'test.vue',
       code: '<template><div><button type="button"></button><div></template>',
+      options: ['button'],
       errors: [
         {
           message: 'Unexpected use of forbidden HTML element button.',
           line: 1,
           column: 16
         }
-      ],
-      options: ['button']
+      ]
     },
     {
       filename: 'test.vue',
       code: '<template><div class="foo"><button type="button"></button></div></template>',
+      options: ['div'],
       errors: [
         {
           message: 'Unexpected use of forbidden HTML element div.',
           line: 1,
           column: 11
         }
-      ],
-      options: ['div']
+      ]
     },
     {
       filename: 'test.vue',
       code: '<template><marquee>foo</marquee></template>',
+      options: [{ element: 'marquee', message: 'Custom error' }],
       errors: [
         {
           message: 'Custom error',
           line: 1,
           column: 11
         }
-      ],
-      options: [{ element: 'marquee', message: 'Custom error' }]
+      ]
     }
   ]
 })

@@ -1,13 +1,10 @@
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/no-deprecated-slot-attribute.js')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
-    ecmaVersion: 2015
-  }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('no-deprecated-slot-attribute', rule, {
@@ -46,7 +43,19 @@ tester.run('no-deprecated-slot-attribute', rule, {
       <LinkList>
         <a />
       </LinkList>
-    </template>`
+    </template>`,
+    {
+      code: `<template>
+      <LinkList>
+        <one slot="one" />
+        <two slot="two" />
+        <my-component slot="my-component-slot" />
+        <myComponent slot="myComponent-slot" />
+        <MyComponent slot="MyComponent-slot" />
+      </LinkList>
+    </template>`,
+      options: [{ ignore: ['one', 'two', 'my-component'] }]
+    }
   ],
   invalid: [
     {
@@ -309,7 +318,7 @@ tester.run('no-deprecated-slot-attribute', rule, {
       output: `
       <template>
         <LinkList>
-          <template v-slot><a /></template>
+          <template v-slot:[slot]><a /></template>
         </LinkList>
       </template>`,
       errors: [
@@ -487,17 +496,7 @@ tester.run('no-deprecated-slot-attribute', rule, {
           </template>
         </my-component>
       </template>`,
-      output: `
-      <template>
-        <my-component>
-          <template slot="one">
-            A
-          </template>
-          <template slot="one">
-            B
-          </template>
-        </my-component>
-      </template>`,
+      output: null,
       errors: [
         '`slot` attributes are deprecated.',
         '`slot` attributes are deprecated.'
@@ -604,6 +603,26 @@ tester.run('no-deprecated-slot-attribute', rule, {
         '`slot` attributes are deprecated.',
         '`slot` attributes are deprecated.'
       ]
+    },
+    {
+      code: `
+      <template>
+        <my-component>
+          <one slot="one">
+            A
+          </one>
+          <two slot="two">
+            B
+          </two>
+        </my-component>
+      </template>`,
+      output: null,
+      options: [
+        {
+          ignore: ['one']
+        }
+      ],
+      errors: ['`slot` attributes are deprecated.']
     }
   ]
 })

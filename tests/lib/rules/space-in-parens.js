@@ -19,8 +19,7 @@ const errorMessage = semver.lt(ESLint.version, '6.4.0')
   : (obj) => obj
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('space-in-parens', rule, {
@@ -94,13 +93,13 @@ tester.run('space-in-parens', rule, {
           @click="foo(arg)"
         />
       </template>`,
-      options: ['always'],
       output: `
       <template>
         <button
           @click="foo( arg )"
         />
       </template>`,
+      options: ['always'],
       errors: [
         errorMessage({
           messageId: 'missingOpeningSpace',
@@ -143,13 +142,13 @@ tester.run('space-in-parens', rule, {
           :value="(1 + 2) + 3"
         >
       </template>`,
-      options: ['always'],
       output: `
       <template>
         <input
           :value="( 1 + 2 ) + 3"
         >
       </template>`,
+      options: ['always'],
       errors: [
         errorMessage({
           messageId: 'missingOpeningSpace',
@@ -192,13 +191,13 @@ tester.run('space-in-parens', rule, {
           :[(1+2)]="(1 + 2) + 3"
         >
       </template>`,
-      options: ['always'],
       output: `
       <template>
         <input
           :[(1+2)]="( 1 + 2 ) + 3"
         >
       </template>`,
+      options: ['always'],
       errors: [
         errorMessage({
           messageId: 'missingOpeningSpace',

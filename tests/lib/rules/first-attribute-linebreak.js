@@ -4,24 +4,21 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/first-attribute-linebreak')
 
 const ruleTester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 ruleTester.run('first-attribute-linebreak', rule, {
   valid: [
-    {
-      code: `
+    `
       <template>
         <component></component>
-      </template>`
-    },
-    {
-      code: `
+      </template>
+    `,
+    `
       <template>
         <component
           name="John Doe"
@@ -33,8 +30,8 @@ ruleTester.run('first-attribute-linebreak', rule, {
         ></component>
         <component name="John Doe"
         ></component>
-      </template>`
-    },
+      </template>
+    `,
     {
       code: `
       <template>

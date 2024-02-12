@@ -1,4 +1,4 @@
-<!--{"parserOptions": {"parser":"@typescript-eslint/parser"}}-->
+<!--{"languageOptions": {"parserOptions": {"parser":"@typescript-eslint/parser"}}}-->
 <script lang="ts">
 class
   Foo
@@ -23,6 +23,6 @@ class
       boolean
       =
       false
-  )
+  ) {}
 }
 </script>

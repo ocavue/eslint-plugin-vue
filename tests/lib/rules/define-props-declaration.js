@@ -4,12 +4,12 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/define-props-declaration')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
     ecmaVersion: 2020,
     sourceType: 'module'
   }
@@ -26,8 +26,10 @@ tester.run('define-props-declaration', rule, {
       }>()
       </script>
       `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
       }
     },
     {
@@ -39,10 +41,12 @@ tester.run('define-props-declaration', rule, {
       }>()
       </script>
       `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
-      options: ['type-based']
+      options: ['type-based'],
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     },
     {
       filename: 'test.vue',
@@ -75,8 +79,10 @@ tester.run('define-props-declaration', rule, {
       })
       </script>
       `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
       }
     },
     {
@@ -94,8 +100,10 @@ tester.run('define-props-declaration', rule, {
         }
         </script>
       `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
       }
     }
   ],
@@ -125,13 +133,13 @@ tester.run('define-props-declaration', rule, {
       })
       </script>
       `,
+      options: ['type-based'],
       errors: [
         {
           message: 'Use type-based declaration instead of runtime declaration.',
           line: 3
         }
-      ],
-      options: ['type-based']
+      ]
     },
     {
       filename: 'test.vue',
@@ -142,16 +150,18 @@ tester.run('define-props-declaration', rule, {
       }>()
       </script>
       `,
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
       options: ['runtime'],
       errors: [
         {
           message: 'Use runtime declaration instead of type-based declaration.',
           line: 3
         }
-      ]
+      ],
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     }
   ]
 })

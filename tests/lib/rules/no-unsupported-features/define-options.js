@@ -4,14 +4,14 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../../eslint-compat').RuleTester
 const rule = require('../../../../lib/rules/no-unsupported-features')
 const utils = require('./utils')
 
 const buildOptions = utils.optionsBuilder('define-options', '^3.2.0')
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
     ecmaVersion: 2019,
     sourceType: 'module'
   }
@@ -47,7 +47,6 @@ tester.run('no-unsupported-features/define-options', rule, {
       <script setup>
         defineOptions({ name: 'Foo' })
       </script>`,
-      options: buildOptions(),
       output: `
       <script>
 export default { name: 'Foo' }
@@ -55,6 +54,7 @@ export default { name: 'Foo' }
 <script setup>
 
       </script>`,
+      options: buildOptions(),
       errors: [
         {
           message:
@@ -68,7 +68,6 @@ export default { name: 'Foo' }
       <script setup>
         defineOptions({});
       </script>`,
-      options: buildOptions(),
       output: `
       <script>
 export default {}
@@ -76,6 +75,7 @@ export default {}
 <script setup>
 
       </script>`,
+      options: buildOptions(),
       errors: [
         {
           message:

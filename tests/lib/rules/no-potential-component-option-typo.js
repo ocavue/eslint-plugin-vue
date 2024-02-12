@@ -6,11 +6,14 @@
 
 const rule = require('../../../lib/rules/no-potential-component-option-typo')
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2018, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2018,
+    sourceType: 'module'
+  }
 })
 
 tester.run('no-potential-component-option-typo', rule, {
@@ -174,6 +177,7 @@ tester.run('no-potential-component-option-typo', rule, {
         method: {}
       }
       </script>`,
+      options: [{ custom: ['data', 'methods'] }],
       errors: [
         {
           message: "'dat' may be a typo, which is similar to option [data].",
@@ -209,8 +213,7 @@ tester.run('no-potential-component-option-typo', rule, {
             }
           ]
         }
-      ],
-      options: [{ custom: ['data', 'methods'] }]
+      ]
     },
     // test if user define custom rule is duplicate with presets
     //  test custom option that is not available in the presets
@@ -224,6 +227,9 @@ tester.run('no-potential-component-option-typo', rule, {
         custo: {}
       }
       </script>`,
+      options: [
+        { custom: ['data', 'methods', 'custom', 'foo'], presets: ['all'] }
+      ],
       errors: [
         {
           message: "'dat' may be a typo, which is similar to option [data].",
@@ -279,9 +285,6 @@ tester.run('no-potential-component-option-typo', rule, {
             }
           ]
         }
-      ],
-      options: [
-        { custom: ['data', 'methods', 'custom', 'foo'], presets: ['all'] }
       ]
     },
     // test if report correctly, only have preset option
@@ -294,6 +297,7 @@ tester.run('no-potential-component-option-typo', rule, {
         method: {}
       }
       </script>`,
+      options: [{ presets: ['vue'] }],
       errors: [
         {
           message: "'dat' may be a typo, which is similar to option [data].",
@@ -329,8 +333,7 @@ tester.run('no-potential-component-option-typo', rule, {
             }
           ]
         }
-      ],
-      options: [{ presets: ['vue'] }]
+      ]
     },
     // multi preset report typo
     {
@@ -343,6 +346,7 @@ tester.run('no-potential-component-option-typo', rule, {
         method: {}
       }
       </script>`,
+      options: [{ presets: ['vue', 'vue-router'] }],
       errors: [
         {
           message: "'dat' may be a typo, which is similar to option [data].",
@@ -399,8 +403,7 @@ tester.run('no-potential-component-option-typo', rule, {
             }
           ]
         }
-      ],
-      options: [{ presets: ['vue', 'vue-router'] }]
+      ]
     },
     // test multi suggestion
     {
@@ -411,6 +414,7 @@ tester.run('no-potential-component-option-typo', rule, {
         method: {}
       }
       </script>`,
+      options: [{ custom: ['data', 'methods'], threshold: 10, presets: [] }],
       errors: [
         {
           message: `'method' may be a typo, which is similar to option [methods,data].`,
@@ -437,8 +441,7 @@ tester.run('no-potential-component-option-typo', rule, {
             }
           ]
         }
-      ],
-      options: [{ custom: ['data', 'methods'], threshold: 10, presets: [] }]
+      ]
     }
   ]
 })

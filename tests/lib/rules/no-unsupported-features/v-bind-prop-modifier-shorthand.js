@@ -4,7 +4,7 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../../eslint-compat').RuleTester
 const rule = require('../../../../lib/rules/no-unsupported-features')
 const utils = require('./utils')
 
@@ -13,10 +13,7 @@ const buildOptions = utils.optionsBuilder(
   '^2.6.0'
 )
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
-    ecmaVersion: 2019
-  }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2019 }
 })
 
 tester.run('no-unsupported-features/v-bind-prop-modifier-shorthand', rule, {
@@ -63,11 +60,11 @@ tester.run('no-unsupported-features/v-bind-prop-modifier-shorthand', rule, {
       <template>
         <a .href="'/xxx'" />
       </template>`,
-      options: buildOptions(),
       output: `
       <template>
         <a :href.prop="'/xxx'" />
       </template>`,
+      options: buildOptions(),
       errors: [
         {
           message: '`.prop` shorthand are not supported until Vue.js "3.2.0".',
@@ -79,12 +76,12 @@ tester.run('no-unsupported-features/v-bind-prop-modifier-shorthand', rule, {
       code: `
       <template>
         <a .href="'/xxx'" />
+      </template>`,
+      output: `
+      <template>
+        <a :href.prop="'/xxx'" />
       </template>`,
       options: buildOptions({ version: '2.5.99' }),
-      output: `
-      <template>
-        <a :href.prop="'/xxx'" />
-      </template>`,
       errors: [
         {
           message: '`.prop` shorthand are not supported until Vue.js "3.2.0".',
@@ -97,11 +94,11 @@ tester.run('no-unsupported-features/v-bind-prop-modifier-shorthand', rule, {
       <template>
         <a .href="'/xxx'" />
       </template>`,
-      options: buildOptions({ version: '3.1.0' }),
       output: `
       <template>
         <a :href.prop="'/xxx'" />
       </template>`,
+      options: buildOptions({ version: '3.1.0' }),
       errors: [
         {
           message: '`.prop` shorthand are not supported until Vue.js "3.2.0".',

@@ -4,16 +4,13 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../../eslint-compat').RuleTester
 const rule = require('../../../../lib/rules/no-unsupported-features')
 const utils = require('./utils')
 
 const buildOptions = utils.optionsBuilder('slot-scope-attribute', '^2.4.0')
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
-    ecmaVersion: 2019
-  }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2019 }
 })
 
 tester.run('no-unsupported-features/slot-scope-attribute', rule, {
@@ -66,8 +63,8 @@ tester.run('no-unsupported-features/slot-scope-attribute', rule, {
           <a slot-scope />
         </LinkList>
       </template>`,
-      options: buildOptions(),
       output: null,
+      options: buildOptions(),
       errors: [
         {
           message:
@@ -83,8 +80,8 @@ tester.run('no-unsupported-features/slot-scope-attribute', rule, {
           <a slot-scope="{a}" />
         </LinkList>
       </template>`,
-      options: buildOptions(),
       output: null,
+      options: buildOptions(),
       errors: [
         {
           message:
@@ -100,8 +97,8 @@ tester.run('no-unsupported-features/slot-scope-attribute', rule, {
           <a slot-scope />
         </LinkList>
       </template>`,
-      options: buildOptions({ version: '^3.0.0' }),
       output: null,
+      options: buildOptions({ version: '^3.0.0' }),
       errors: [
         {
           message:

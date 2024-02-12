@@ -109,6 +109,11 @@ export default {
 
 </eslint-code-block>
 
+## :couple: Related Rules
+
+- [vue/no-unused-emit-declarations](./no-unused-emit-declarations.md)
+- [vue/require-explicit-slots](./require-explicit-slots.md)
+
 ## :books: Further Reading
 
 - [Guide - Custom Events / Defining Custom Events](https://v3.vuejs.org/guide/component-custom-events.html#defining-custom-events)

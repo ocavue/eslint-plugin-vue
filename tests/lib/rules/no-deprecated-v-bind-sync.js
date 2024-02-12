@@ -5,11 +5,10 @@
 'use strict'
 
 const rule = require('../../../lib/rules/no-deprecated-v-bind-sync')
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 
 const ruleTester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 ruleTester.run('no-deprecated-v-bind-sync', rule, {
@@ -68,7 +67,7 @@ ruleTester.run('no-deprecated-v-bind-sync', rule, {
     {
       filename: 'test.vue',
       code: "<template><MyComponent v-bind.sync='bar'/></template>",
-      output: "<template><MyComponent v-bind.sync='bar'/></template>",
+      output: null,
       errors: [
         "'.sync' modifier on 'v-bind' directive is deprecated. Use 'v-model:propName' instead."
       ]
@@ -76,7 +75,7 @@ ruleTester.run('no-deprecated-v-bind-sync', rule, {
     {
       filename: 'test.vue',
       code: '<template><MyComponent :foo.sync.unknown="foo" /></template>',
-      output: '<template><MyComponent :foo.sync.unknown="foo" /></template>',
+      output: null,
       errors: [
         "'.sync' modifier on 'v-bind' directive is deprecated. Use 'v-model:propName' instead."
       ]
@@ -84,8 +83,7 @@ ruleTester.run('no-deprecated-v-bind-sync', rule, {
     {
       filename: 'test.vue',
       code: '<template><MyComponent :[dynamicArg].sync.unknown="foo" /></template>',
-      output:
-        '<template><MyComponent :[dynamicArg].sync.unknown="foo" /></template>',
+      output: null,
       errors: [
         "'.sync' modifier on 'v-bind' directive is deprecated. Use 'v-model:propName' instead."
       ]

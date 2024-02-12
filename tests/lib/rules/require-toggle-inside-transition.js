@@ -4,12 +4,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/require-toggle-inside-transition')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('require-toggle-inside-transition', rule, {
@@ -57,6 +56,18 @@ tester.run('require-toggle-inside-transition', rule, {
     {
       filename: 'test.vue',
       code: '<template><transition><template v-if="show"><div /></template></transition></template>'
+    },
+    {
+      filename: 'test.vue',
+      code: '<template><transition><slot /></transition></template>'
+    },
+    {
+      filename: 'test.vue',
+      code: '<template><transition><div :key="k" /></transition></template>'
+    },
+    {
+      filename: 'test.vue',
+      code: '<template><transition appear><div /></transition></template>'
     }
   ],
   invalid: [
@@ -96,6 +107,11 @@ tester.run('require-toggle-inside-transition', rule, {
     {
       filename: 'test.vue',
       code: '<template><transition><template v-for="e in list"><div /></template></transition></template>',
+      errors: [{ messageId: 'expected' }]
+    },
+    {
+      filename: 'test.vue',
+      code: '<template><Transition>  <div /></Transition></template>',
       errors: [{ messageId: 'expected' }]
     }
   ]

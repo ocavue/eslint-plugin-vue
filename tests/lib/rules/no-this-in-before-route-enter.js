@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 const rule = require('../../../lib/rules/no-this-in-before-route-enter')
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 
 //------------------------------------------------------------------------------
 // Tests
@@ -59,8 +59,11 @@ export default {
 </script>`
 
 const ruleTester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2020, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2020,
+    sourceType: 'module'
+  }
 })
 ruleTester.run('no-this-in-before-route-enter', rule, {
   valid: [
@@ -83,8 +86,8 @@ export default {
   ],
   invalid: [
     {
+      filename: 'ValidComponent.vue',
       code: template(`this.xxx();`),
-      filename: 'ValidComponent.vue',
       errors: [
         {
           message:
@@ -97,8 +100,8 @@ export default {
       ]
     },
     {
+      filename: 'ValidComponent.vue',
       code: functionTemplate('this.method();'),
-      filename: 'ValidComponent.vue',
       errors: [
         {
           message:
@@ -111,8 +114,8 @@ export default {
       ]
     },
     {
+      filename: 'ValidComponent.vue',
       code: template('this.attr = this.method();'),
-      filename: 'ValidComponent.vue',
       errors: [
         {
           message:
@@ -133,8 +136,8 @@ export default {
       ]
     },
     {
+      filename: 'ValidComponent.vue',
       code: functionTemplate('this.attr = this.method();'),
-      filename: 'ValidComponent.vue',
       errors: [
         {
           message:
@@ -155,10 +158,10 @@ export default {
       ]
     },
     {
+      filename: 'ValidComponent.vue',
       code: template(`
                 if (this.method()) {}
             `),
-      filename: 'ValidComponent.vue',
       errors: [
         {
           message:
@@ -171,10 +174,10 @@ export default {
       ]
     },
     {
+      filename: 'ValidComponent.vue',
       code: functionTemplate(`
                 if (true) { this.method(); }
             `),
-      filename: 'ValidComponent.vue',
       errors: [
         {
           message:

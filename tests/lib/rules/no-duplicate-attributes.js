@@ -5,12 +5,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/no-duplicate-attributes')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('no-duplicate-attributes', rule, {
@@ -73,26 +72,26 @@ tester.run('no-duplicate-attributes', rule, {
     {
       filename: 'test.vue',
       code: '<template><div><div style :style></div></div></template>',
-      errors: ["Duplicate attribute 'style'."],
-      options: [{ allowCoexistStyle: false }]
+      options: [{ allowCoexistStyle: false }],
+      errors: ["Duplicate attribute 'style'."]
     },
     {
       filename: 'test.vue',
       code: '<template><div><div class :class></div></div></template>',
-      errors: ["Duplicate attribute 'class'."],
-      options: [{ allowCoexistClass: false }]
+      options: [{ allowCoexistClass: false }],
+      errors: ["Duplicate attribute 'class'."]
     },
     {
       filename: 'test.vue',
       code: '<template><div><div :style style></div></div></template>',
-      errors: ["Duplicate attribute 'style'."],
-      options: [{ allowCoexistStyle: false }]
+      options: [{ allowCoexistStyle: false }],
+      errors: ["Duplicate attribute 'style'."]
     },
     {
       filename: 'test.vue',
       code: '<template><div><div :class class></div></div></template>',
-      errors: ["Duplicate attribute 'class'."],
-      options: [{ allowCoexistClass: false }]
+      options: [{ allowCoexistClass: false }],
+      errors: ["Duplicate attribute 'class'."]
     }
   ]
 })

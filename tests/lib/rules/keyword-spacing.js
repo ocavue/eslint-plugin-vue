@@ -3,12 +3,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/keyword-spacing')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 tester.run('keyword-spacing', rule, {
@@ -101,7 +100,6 @@ tester.run('keyword-spacing', rule, {
           }
         " />
       </template>`,
-      options: [{ before: false, after: false }],
       output: `<template>
         <div @event="
           if(foo) {
@@ -113,6 +111,7 @@ tester.run('keyword-spacing', rule, {
           }
         " />
       </template>`,
+      options: [{ before: false, after: false }],
       errors: [
         {
           message: 'Unexpected space(s) after "if".',

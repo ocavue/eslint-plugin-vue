@@ -4,12 +4,15 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/valid-define-options')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015, sourceType: 'module' }
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
+    ecmaVersion: 2015,
+    sourceType: 'module'
+  }
 })
 
 tester.run('valid-define-options', rule, {
@@ -35,29 +38,33 @@ tester.run('valid-define-options', rule, {
     },
     {
       filename: 'test.vue',
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
       code: `
       <script setup lang="ts">
       type X = string;
 
       defineOptions({ name: 'foo' as X })
       </script>
-      `
+      `,
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     },
     {
       filename: 'test.vue',
-      parserOptions: {
-        parser: require.resolve('@typescript-eslint/parser')
-      },
       code: `
       <script setup lang="ts">
       const str = 'abc'
 
       defineOptions({ name: 'foo' as (typeof str) })
       </script>
-      `
+      `,
+      languageOptions: {
+        parserOptions: {
+          parser: require.resolve('@typescript-eslint/parser')
+        }
+      }
     },
     {
       filename: 'test.vue',
@@ -125,7 +132,6 @@ tester.run('valid-define-options', rule, {
       defineOptions<{ name: 'Foo' }>()
       </script>
       `,
-      parserOptions: { parser: require.resolve('@typescript-eslint/parser') },
       errors: [
         {
           message: 'Options are not defined.',
@@ -135,7 +141,10 @@ tester.run('valid-define-options', rule, {
           message: '`defineOptions()` cannot accept type arguments.',
           line: 3
         }
-      ]
+      ],
+      languageOptions: {
+        parserOptions: { parser: require.resolve('@typescript-eslint/parser') }
+      }
     },
     {
       filename: 'test.vue',

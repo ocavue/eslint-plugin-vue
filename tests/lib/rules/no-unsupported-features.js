@@ -7,14 +7,11 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/no-unsupported-features')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
-    ecmaVersion: 2019
-  }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2019 }
 })
 
 tester.run('no-unsupported-features', rule, {
@@ -45,7 +42,6 @@ tester.run('no-unsupported-features', rule, {
           </template>
         </VList>
       </template>`,
-      options: [{ version: '^2.5.0' }],
       output: `
       <template>
         <VList>
@@ -56,6 +52,7 @@ tester.run('no-unsupported-features', rule, {
           </template>
         </VList>
       </template>`,
+      options: [{ version: '^2.5.0' }],
       errors: [
         {
           message: '`v-slot` are not supported until Vue.js "2.6.0".',

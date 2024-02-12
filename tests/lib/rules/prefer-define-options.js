@@ -4,12 +4,12 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/prefer-define-options')
 
 const tester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: {
+  languageOptions: {
+    parser: require('vue-eslint-parser'),
     ecmaVersion: 2020,
     sourceType: 'module'
   }
@@ -102,6 +102,32 @@ defineOptions({ name: 'Foo' })
         {
           message: 'Use `defineOptions` instead of default export.',
           line: 4
+        }
+      ]
+    },
+    {
+      filename: 'test.vue',
+      code: `
+      <script setup>
+      import { ref } from 'vue'
+      const props = defineProps(['foo'])
+      </script>
+      <script>
+      export default { name: 'Foo' }
+      </script>
+      `,
+      output: `
+      <script setup>
+      import { ref } from 'vue'
+defineOptions({ name: 'Foo' })
+
+      const props = defineProps(['foo'])
+      </script>
+      `,
+      errors: [
+        {
+          message: 'Use `defineOptions` instead of default export.',
+          line: 7
         }
       ]
     }

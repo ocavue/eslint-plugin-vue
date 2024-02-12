@@ -6,9 +6,9 @@
 
 const rule = require('../../../lib/rules/return-in-computed-property')
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 
-const parserOptions = {
+const languageOptions = {
   ecmaVersion: 6,
   sourceType: 'module'
 }
@@ -45,7 +45,7 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -62,7 +62,7 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -79,7 +79,7 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -94,8 +94,8 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
-      options: [{ treatUndefinedAsUnspecified: false }]
+      options: [{ treatUndefinedAsUnspecified: false }],
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -128,7 +128,7 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -144,8 +144,8 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
-      options: [{ treatUndefinedAsUnspecified: false }]
+      options: [{ treatUndefinedAsUnspecified: false }],
+      languageOptions
     }
   ],
 
@@ -160,13 +160,13 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
       errors: [
         {
           message: 'Expected to return a value in "foo" computed property.',
           line: 4
         }
-      ]
+      ],
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -178,13 +178,13 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: [
         {
           message: 'Expected to return a value in "foo" computed property.',
           line: 4
         }
-      ]
+      ],
+      languageOptions: { ecmaVersion: 6, sourceType: 'module' }
     },
     {
       filename: 'test.vue',
@@ -199,13 +199,13 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions: { ecmaVersion: 6, sourceType: 'module' },
       errors: [
         {
           message: 'Expected to return a value in "foo" computed property.',
           line: 4
         }
-      ]
+      ],
+      languageOptions: { ecmaVersion: 6, sourceType: 'module' }
     },
     {
       filename: 'test.vue',
@@ -221,13 +221,13 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
       errors: [
         {
           message: 'Expected to return a value in "foo" computed property.',
           line: 7
         }
-      ]
+      ],
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -243,13 +243,13 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
       errors: [
         {
           message: 'Expected to return a value in "foo" computed property.',
           line: 4
         }
-      ]
+      ],
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -264,14 +264,14 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
       options: [{ treatUndefinedAsUnspecified: false }],
       errors: [
         {
           message: 'Expected to return a value in "foo" computed property.',
           line: 4
         }
-      ]
+      ],
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -284,14 +284,14 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
       options: [{ treatUndefinedAsUnspecified: true }],
       errors: [
         {
           message: 'Expected to return a value in "foo" computed property.',
           line: 4
         }
-      ]
+      ],
+      languageOptions
     },
     {
       filename: 'test.js',
@@ -306,14 +306,14 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
       errors: [
         {
           message:
             'Expected to return a value in "my_FALSE_test" computed property.',
           line: 5
         }
-      ]
+      ],
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -341,7 +341,6 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
       errors: [
         {
           message: 'Expected to return a value in computed function.',
@@ -363,7 +362,8 @@ ruleTester.run('return-in-computed-property', rule, {
           message: 'Expected to return a value in computed function.',
           line: 16
         }
-      ]
+      ],
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -378,14 +378,14 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       `,
-      parserOptions,
       options: [{ treatUndefinedAsUnspecified: false }],
       errors: [
         {
           message: 'Expected to return a value in computed function.',
           line: 5
         }
-      ]
+      ],
+      languageOptions
     },
     {
       filename: 'test.vue',
@@ -396,13 +396,13 @@ ruleTester.run('return-in-computed-property', rule, {
           }
         }
       }`,
-      parserOptions,
       errors: [
         {
           message: 'Expected to return a value in "foo" computed property.',
           line: 4
         }
-      ]
+      ],
+      languageOptions
     }
   ]
 })

@@ -4,33 +4,26 @@
  */
 'use strict'
 
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('../../eslint-compat').RuleTester
 const rule = require('../../../lib/rules/max-attributes-per-line')
 
 const ruleTester = new RuleTester({
-  parser: require.resolve('vue-eslint-parser'),
-  parserOptions: { ecmaVersion: 2015 }
+  languageOptions: { parser: require('vue-eslint-parser'), ecmaVersion: 2015 }
 })
 
 ruleTester.run('max-attributes-per-line', rule, {
   valid: [
-    {
-      code: `<template><component></component></template>`
-    },
-    {
-      code: `<template><component
+    `<template><component></component></template>`,
+    `<template><component
         name="John Doe"
         age="30"
         job="Vet"
-      ></component></template>`
-    },
-    {
-      code: `<template><component
+      ></component></template>`,
+    `<template><component
         name="John Doe"
         age="30"
       >
-      </component></template>`
-    },
+      </component></template>`,
     {
       code: `<template><component
         name="John Doe"
@@ -39,13 +32,11 @@ ruleTester.run('max-attributes-per-line', rule, {
       </template>`,
       options: [{ singleline: 1 }]
     },
-    {
-      code: `<template><component job="Vet"
+    `<template><component job="Vet"
         name="John Doe"
         age="30">
         </component>
       </template>`
-    }
   ],
 
   invalid: [
@@ -93,9 +84,9 @@ v-bind:age="user.age"></component></template>`,
     },
     {
       code: `<template><component name="John Doe" age="30" job="Vet"></component></template>`,
-      options: [{ singleline: { max: 2 } }],
       output: `<template><component name="John Doe" age="30"
 job="Vet"></component></template>`,
+      options: [{ singleline: { max: 2 } }],
       errors: [
         {
           message: "'job' should be on a new line.",
@@ -110,13 +101,13 @@ job="Vet"></component></template>`,
         job="Vet">
         </component>
       </template>`,
-      options: [{ singleline: 3, multiline: 1 }],
       output: `<template><component
         name="John Doe"
 age="30"
         job="Vet">
         </component>
       </template>`,
+      options: [{ singleline: 3, multiline: 1 }],
       errors: [
         {
           message: "'age' should be on a new line.",
@@ -131,13 +122,13 @@ age="30"
         job="Vet">
         </component>
       </template>`,
-      options: [{ multiline: { max: 1 } }],
       output: `<template><component
         name="John Doe"
 age="30"
         job="Vet">
         </component>
       </template>`,
+      options: [{ multiline: { max: 1 } }],
       errors: [
         {
           message: "'age' should be on a new line.",
